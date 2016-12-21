@@ -15,10 +15,10 @@ namespace EmployeePoints.Controllers
         //
         // GET: /ADO/
 
-        [HttpPost]
+        //[HttpPost]
         public JsonResult SignIn(EmpSignin modal)
         {
-            var message = "Enter Correct Details.";
+            var message = new LogId();
             var messageType = "error";
 
             try
@@ -28,20 +28,20 @@ namespace EmployeePoints.Controllers
                     //ADOBLLWithQuery bll = new ADOBLLWithQuery();
                     EPBLL bll = new EPBLL();
                     var isSuccess = bll.SignIn(modal);
-                    if (isSuccess.LoginId!=null)
-                    {
-                        message = "Employee added successfully";
+                    //if (isSuccess.LoginId!=null)
+                    //{
+                    message = isSuccess;
                         messageType = "success";
-                    }
+                    //}
                 }
                 else
                 {
-                    message = "All field(s) are mandatory.";
+                    message = new LogId();
                 }
             }
             catch (Exception)
             {
-                message = "Exception occurred while performing operation.";
+                //message = "Exception occurred while performing operation.";
             }
 
             return Json(new { messageType = messageType, message = message }, JsonRequestBehavior.AllowGet);

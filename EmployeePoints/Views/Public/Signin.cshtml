@@ -46,7 +46,7 @@
                 "Password": $('#pwd').val(),
             }
             $.ajax({
-                url: "http://localhost:49226/api/Crud/signin",
+                url: "/ADO/SignIn",
                 type: "POST",
                 contentType: "application/json; charset=utf-8",
                 data: JSON.stringify(user),
@@ -57,7 +57,7 @@
                         toastr["error"]("Enter Correct Details.")
                     } else {
                         localStorage.setItem('empid', res.EmployeeId);
-                        window.location.replace("@Url.Action("Dashboard", "Private")");
+                        //window.location.replace("@Url.Action("Dashboard", "Private")");
                     }
 
                 },

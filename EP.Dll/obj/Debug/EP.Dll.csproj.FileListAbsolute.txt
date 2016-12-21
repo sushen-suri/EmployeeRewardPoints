@@ -7,3 +7,4 @@ C:\Users\su.suri\documents\visual studio 2013\Projects\EmployeePoints\EP.Dll\bin
 C:\Users\su.suri\documents\visual studio 2013\Projects\EmployeePoints\EP.Dll\obj\Debug\EP.Dll.csprojResolveAssemblyReference.cache
 C:\Users\su.suri\documents\visual studio 2013\Projects\EmployeePoints\EP.Dll\obj\Debug\EP.Dll.dll
 C:\Users\su.suri\documents\visual studio 2013\Projects\EmployeePoints\EP.Dll\obj\Debug\EP.Dll.pdb
+C:\Users\su.suri\documents\visual studio 2013\Projects\EmployeePoints\EP.Dll\bin\Debug\EntityFramework.dll
