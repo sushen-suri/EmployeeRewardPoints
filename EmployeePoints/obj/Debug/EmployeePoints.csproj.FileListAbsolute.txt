@@ -32,3 +32,37 @@ C:\Users\su.suri\documents\visual studio 2013\Projects\EmployeePoints\EmployeePo
 C:\Users\su.suri\documents\visual studio 2013\Projects\EmployeePoints\EmployeePoints\bin\EP.Dll.pdb
 C:\Users\su.suri\documents\visual studio 2013\Projects\EmployeePoints\EmployeePoints\obj\Debug\EmployeePoints.dll
 C:\Users\su.suri\documents\visual studio 2013\Projects\EmployeePoints\EmployeePoints\obj\Debug\EmployeePoints.pdb
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\EmployeePoints.dll.config
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\EmployeePoints.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\EmployeePoints.pdb
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\EP.Bll.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\EP.Bo.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\Microsoft.Web.Infrastructure.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\Microsoft.Web.Mvc.FixedDisplayModes.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\Newtonsoft.Json.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Net.Http.Formatting.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.Helpers.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.Http.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.Http.WebHost.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.Mvc.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.Razor.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.WebPages.Deployment.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.WebPages.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.WebPages.Razor.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\EP.Dll.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\EP.Bll.pdb
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\EP.Bo.pdb
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\Newtonsoft.Json.xml
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Net.Http.Formatting.xml
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.Helpers.xml
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.Http.xml
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.Http.WebHost.xml
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.Mvc.xml
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.Razor.xml
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.WebPages.xml
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.WebPages.Deployment.xml
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\System.Web.WebPages.Razor.xml
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\bin\EP.Dll.pdb
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\obj\Debug\EmployeePoints.csprojResolveAssemblyReference.cache
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\obj\Debug\EmployeePoints.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EmployeePoints\obj\Debug\EmployeePoints.pdb

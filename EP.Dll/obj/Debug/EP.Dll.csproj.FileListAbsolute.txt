@@ -8,3 +8,12 @@ C:\Users\su.suri\documents\visual studio 2013\Projects\EmployeePoints\EP.Dll\obj
 C:\Users\su.suri\documents\visual studio 2013\Projects\EmployeePoints\EP.Dll\obj\Debug\EP.Dll.dll
 C:\Users\su.suri\documents\visual studio 2013\Projects\EmployeePoints\EP.Dll\obj\Debug\EP.Dll.pdb
 C:\Users\su.suri\documents\visual studio 2013\Projects\EmployeePoints\EP.Dll\bin\Debug\EntityFramework.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EP.Dll\bin\Debug\EP.Dll.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EP.Dll\bin\Debug\EP.Dll.pdb
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EP.Dll\bin\Debug\EP.Bo.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EP.Dll\bin\Debug\EP.Modal.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EP.Dll\bin\Debug\EP.Bo.pdb
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EP.Dll\bin\Debug\EP.Modal.pdb
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EP.Dll\obj\Debug\EP.Dll.csprojResolveAssemblyReference.cache
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EP.Dll\obj\Debug\EP.Dll.dll
+C:\Users\ga.omar\Desktop\EmployeeCredits\EmployeeRewardPoints\EmployeeRewardPoints\EP.Dll\obj\Debug\EP.Dll.pdb
