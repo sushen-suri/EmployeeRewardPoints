@@ -1,0 +1,75 @@
+﻿@{
+    ViewBag.Title = "Signin";
+    Layout = "~/Views/_Shared/_Shared.cshtml";
+}
+
+
+<div class="row">
+    <div class="col-sm-offset-3 col-sm-6">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h2 class="text-center">Signin</h2></div>
+            <div class="panel-body">
+
+                <form>
+                    <div class="form-group">
+                        <label for="email">Employee ID:</label>
+                        <input type="email" class="form-control" id="empId">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pwd">Password:</label>
+                        <input type="password" class="form-control" id="pwd">
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary" id="signin">Signin</button>
+                    </div>
+
+                </form>
+                <hr />
+                <div class="col-sm-12 col-xs-12 text-center">
+                    <h3>Don't have an account</h3>
+                    <a class="btn btn-primary" id="submit" href="@Url.Action("Signup", "Public")">Signup</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).on("click", "#signin", function () {
+        if ($('#empId').val() && $('#pwd').val()) {
+            var user = {};
+            user = {
+                "EmployeeId": $('#empId').val(),
+                "Password": $('#pwd').val(),
+            }
+            $.ajax({
+                url: "http://localhost:49226/api/Crud/signin",
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(user),
+                //crossDomain: true,
+                success: function (res) {
+                    console.log(res);
+                    if (res == null) {
+                        toastr["error"]("Enter Correct Details.")
+                    } else {
+                        localStorage.setItem('empid', res.EmployeeId);
+                        window.location.replace("@Url.Action("Dashboard", "Private")");
+                    }
+
+                },
+                error: function (err) {
+                    toastr["error"](err);
+                }
+            });
+            console.log(user);
+            return false;
+        } else {
+            alert('All Fields are Mandatory.');
+        }
+    });
+
+</script>

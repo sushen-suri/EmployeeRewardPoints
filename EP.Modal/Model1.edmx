@@ -1,0 +1,265 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EmployeeRewardPointsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="DesignationTable">
+          <Key>
+            <PropertyRef Name="DesignationId" />
+          </Key>
+          <Property Name="DesignationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EmployeeRewardPoints.dbo.EarnedPoints' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="EarnedPoints">
+          <Key>
+            <PropertyRef Name="FromEmployeeId" />
+            <PropertyRef Name="ToEmployeeId" />
+            <PropertyRef Name="Points" />
+            <PropertyRef Name="DateGiven" />
+            <PropertyRef Name="IsRedeemed" />
+            <PropertyRef Name="Reason" />
+          </Key>
+          <Property Name="FromEmployeeId" Type="bigint" Nullable="false" />
+          <Property Name="ToEmployeeId" Type="bigint" Nullable="false" />
+          <Property Name="Points" Type="int" Nullable="false" />
+          <Property Name="DateGiven" Type="date" Nullable="false" />
+          <Property Name="IsRedeemed" Type="bit" Nullable="false" />
+          <Property Name="DateRedeemed" Type="date" />
+          <Property Name="Reason" Type="varchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmployeeTable">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeName" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="DesignationId" Type="int" Nullable="false" />
+          <Property Name="ProfilePic" Type="varchar(max)" Nullable="false" />
+          <Property Name="TotalEarnedPoints" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="LoginTable">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LoginId" Type="bigint" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="Contact" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_EmployeeTable_DesignationTable">
+          <End Role="DesignationTable" Type="Self.DesignationTable" Multiplicity="1" />
+          <End Role="EmployeeTable" Type="Self.EmployeeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DesignationTable">
+              <PropertyRef Name="DesignationId" />
+            </Principal>
+            <Dependent Role="EmployeeTable">
+              <PropertyRef Name="DesignationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoginTable_EmployeeTable">
+          <End Role="EmployeeTable" Type="Self.EmployeeTable" Multiplicity="1" />
+          <End Role="LoginTable" Type="Self.LoginTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeTable">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="LoginTable">
+              <PropertyRef Name="LoginId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmployeeRewardPointsModelStoreContainer">
+          <EntitySet Name="DesignationTable" EntityType="Self.DesignationTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeTable" EntityType="Self.EmployeeTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LoginTable" EntityType="Self.LoginTable" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EarnedPoints" EntityType="Self.EarnedPoints" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+[EarnedPoints].[FromEmployeeId] AS [FromEmployeeId], 
+[EarnedPoints].[ToEmployeeId] AS [ToEmployeeId], 
+[EarnedPoints].[Points] AS [Points], 
+[EarnedPoints].[DateGiven] AS [DateGiven], 
+[EarnedPoints].[IsRedeemed] AS [IsRedeemed], 
+[EarnedPoints].[DateRedeemed] AS [DateRedeemed], 
+[EarnedPoints].[Reason] AS [Reason]
+FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_EmployeeTable_DesignationTable" Association="Self.FK_EmployeeTable_DesignationTable">
+            <End Role="DesignationTable" EntitySet="DesignationTable" />
+            <End Role="EmployeeTable" EntitySet="EmployeeTable" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoginTable_EmployeeTable" Association="Self.FK_LoginTable_EmployeeTable">
+            <End Role="EmployeeTable" EntitySet="EmployeeTable" />
+            <End Role="LoginTable" EntitySet="LoginTable" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EmployeeRewardPointsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="DesignationTable">
+          <Key>
+            <PropertyRef Name="DesignationId" />
+          </Key>
+          <Property Name="DesignationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="EmployeeTables" Relationship="Self.FK_EmployeeTable_DesignationTable" FromRole="DesignationTable" ToRole="EmployeeTable" />
+        </EntityType>
+        <EntityType Name="EmployeeTable">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DesignationId" Type="Int32" Nullable="false" />
+          <Property Name="ProfilePic" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TotalEarnedPoints" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="DesignationTable" Relationship="Self.FK_EmployeeTable_DesignationTable" FromRole="EmployeeTable" ToRole="DesignationTable" />
+          <NavigationProperty Name="LoginTables" Relationship="Self.FK_LoginTable_EmployeeTable" FromRole="EmployeeTable" ToRole="LoginTable" />
+        </EntityType>
+        <EntityType Name="LoginTable">
+          <Key>
+            <PropertyRef Name="EmployeeId" />
+          </Key>
+          <Property Name="EmployeeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LoginId" Type="Int64" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="EmployeeTable" Relationship="Self.FK_LoginTable_EmployeeTable" FromRole="LoginTable" ToRole="EmployeeTable" />
+        </EntityType>
+        <EntityType Name="EarnedPoint">
+          <Key>
+            <PropertyRef Name="FromEmployeeId" />
+            <PropertyRef Name="ToEmployeeId" />
+            <PropertyRef Name="Points" />
+            <PropertyRef Name="DateGiven" />
+            <PropertyRef Name="IsRedeemed" />
+            <PropertyRef Name="Reason" />
+          </Key>
+          <Property Name="FromEmployeeId" Type="Int64" Nullable="false" />
+          <Property Name="ToEmployeeId" Type="Int64" Nullable="false" />
+          <Property Name="Points" Type="Int32" Nullable="false" />
+          <Property Name="DateGiven" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IsRedeemed" Type="Boolean" Nullable="false" />
+          <Property Name="DateRedeemed" Type="DateTime" Precision="0" />
+          <Property Name="Reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_EmployeeTable_DesignationTable">
+          <End Role="DesignationTable" Type="Self.DesignationTable" Multiplicity="1" />
+          <End Role="EmployeeTable" Type="Self.EmployeeTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DesignationTable">
+              <PropertyRef Name="DesignationId" />
+            </Principal>
+            <Dependent Role="EmployeeTable">
+              <PropertyRef Name="DesignationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LoginTable_EmployeeTable">
+          <End Role="EmployeeTable" Type="Self.EmployeeTable" Multiplicity="1" />
+          <End Role="LoginTable" Type="Self.LoginTable" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EmployeeTable">
+              <PropertyRef Name="EmployeeId" />
+            </Principal>
+            <Dependent Role="LoginTable">
+              <PropertyRef Name="LoginId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmployeeRewardPointsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DesignationTables" EntityType="Self.DesignationTable" />
+          <EntitySet Name="EmployeeTables" EntityType="Self.EmployeeTable" />
+          <EntitySet Name="LoginTables" EntityType="Self.LoginTable" />
+          <EntitySet Name="EarnedPoints" EntityType="Self.EarnedPoint" />
+          <AssociationSet Name="FK_EmployeeTable_DesignationTable" Association="Self.FK_EmployeeTable_DesignationTable">
+            <End Role="DesignationTable" EntitySet="DesignationTables" />
+            <End Role="EmployeeTable" EntitySet="EmployeeTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoginTable_EmployeeTable" Association="Self.FK_LoginTable_EmployeeTable">
+            <End Role="EmployeeTable" EntitySet="EmployeeTables" />
+            <End Role="LoginTable" EntitySet="LoginTables" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EmployeeRewardPointsModelStoreContainer" CdmEntityContainer="EmployeeRewardPointsEntities">
+          <EntitySetMapping Name="DesignationTables">
+            <EntityTypeMapping TypeName="EmployeeRewardPointsModel.DesignationTable">
+              <MappingFragment StoreEntitySet="DesignationTable">
+                <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeTables">
+            <EntityTypeMapping TypeName="EmployeeRewardPointsModel.EmployeeTable">
+              <MappingFragment StoreEntitySet="EmployeeTable">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
+                <ScalarProperty Name="ProfilePic" ColumnName="ProfilePic" />
+                <ScalarProperty Name="TotalEarnedPoints" ColumnName="TotalEarnedPoints" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LoginTables">
+            <EntityTypeMapping TypeName="EmployeeRewardPointsModel.LoginTable">
+              <MappingFragment StoreEntitySet="LoginTable">
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EarnedPoints">
+            <EntityTypeMapping TypeName="EmployeeRewardPointsModel.EarnedPoint">
+              <MappingFragment StoreEntitySet="EarnedPoints">
+                <ScalarProperty Name="FromEmployeeId" ColumnName="FromEmployeeId" />
+                <ScalarProperty Name="ToEmployeeId" ColumnName="ToEmployeeId" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="DateGiven" ColumnName="DateGiven" />
+                <ScalarProperty Name="IsRedeemed" ColumnName="IsRedeemed" />
+                <ScalarProperty Name="DateRedeemed" ColumnName="DateRedeemed" />
+                <ScalarProperty Name="Reason" ColumnName="Reason" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

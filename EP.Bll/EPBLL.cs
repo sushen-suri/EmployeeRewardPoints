@@ -8,7 +8,13 @@ using EP.Dll;
 
 namespace EP.Bll
 {
-    class EPBLL
+    public class EPBLL
     {
+        EPDLL epObj = new EPDLL();
+
+        public LogId SignIn(EmpSignin modal)
+        {
+            return epObj.SignIn(modal);
+        }
     }
 }

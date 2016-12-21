@@ -6,7 +6,6 @@ using System.Web.Mvc;
 
 using System.Web.Script.Serialization;
 using EP.Bll;
-using System.Web.Mvc;
 using EP.Bo;
 
 namespace EmployeePoints.Controllers
@@ -16,9 +15,36 @@ namespace EmployeePoints.Controllers
         //
         // GET: /ADO/
 
-        public ActionResult Index()
+        [HttpPost]
+        public JsonResult SignIn(EmpSignin modal)
         {
-            return View();
+            var message = "Enter Correct Details.";
+            var messageType = "error";
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    //ADOBLLWithQuery bll = new ADOBLLWithQuery();
+                    EPBLL bll = new EPBLL();
+                    var isSuccess = bll.SignIn(modal);
+                    if (isSuccess.LoginId!=null)
+                    {
+                        message = "Employee added successfully";
+                        messageType = "success";
+                    }
+                }
+                else
+                {
+                    message = "All field(s) are mandatory.";
+                }
+            }
+            catch (Exception)
+            {
+                message = "Exception occurred while performing operation.";
+            }
+
+            return Json(new { messageType = messageType, message = message }, JsonRequestBehavior.AllowGet);
         }
 
     }

@@ -11,7 +11,12 @@ namespace EmployeePoints.Controllers
         //
         // GET: /Public/
 
-        public ActionResult Index()
+        public ActionResult Signin()
+        {
+            return View();
+        }
+        
+        public ActionResult Registration()
         {
             return View();
         }

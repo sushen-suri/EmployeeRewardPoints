@@ -108,6 +108,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\ADOController.cs" />
+    <Compile Include="Controllers\PrivateController.cs" />
+    <Compile Include="Controllers\PublicController.cs" />
+    <Compile Include="Controllers\_SharedController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -129,11 +133,26 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Models\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EP.Bll\EP.Bll.csproj">
+      <Project>{033fe725-e9f7-466f-846f-cc0821772502}</Project>
+      <Name>EP.Bll</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\EP.Bo\EP.Bo.csproj">
+      <Project>{d5bfcc3f-ff14-4eb6-a62d-99e4382d4854}</Project>
+      <Name>EP.Bo</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\_Shared\_Shared.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Public\Signin.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
