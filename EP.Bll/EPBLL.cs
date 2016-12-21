@@ -16,5 +16,10 @@ namespace EP.Bll
         {
             return epObj.SignIn(modal);
         }
+
+        public bool Registration(Registration modal)
+        {
+            return epObj.Registration(modal);
+        }
     }
 }

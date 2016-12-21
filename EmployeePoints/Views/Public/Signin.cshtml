@@ -29,7 +29,7 @@
                 <hr />
                 <div class="col-sm-12 col-xs-12 text-center">
                     <h3>Don't have an account</h3>
-                    <a class="btn btn-primary" id="submit" href="@Url.Action("Signup", "Public")">Signup</a>
+                    <a class="btn btn-primary" id="submit" href="@Url.Action("Registration", "Public")">Signup</a>
                 </div>
             </div>
         </div>
@@ -68,7 +68,7 @@
             console.log(user);
             return false;
         } else {
-            alert('All Fields are Mandatory.');
+            toastr["error"]('All Fields are Mandatory.');
         }
     });
 

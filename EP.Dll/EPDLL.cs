@@ -54,5 +54,39 @@ namespace EP.Dll
             }
         }
 
+        public bool Registration(Registration modal)
+        {
+            try
+            {
+                InitializeConnection();
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("spInsertEmployee", con))
+                {
+                    cmd.Parameters.AddWithValue("@EmployeeId", modal.EmployeeId);
+                    cmd.Parameters.AddWithValue("@DesignationId", modal.DesignationId);
+                    cmd.Parameters.AddWithValue("@EmployeeName", modal.EmployeeName);
+                    cmd.Parameters.AddWithValue("@Email", modal.Email);
+                    cmd.Parameters.AddWithValue("@Password", modal.Password);
+                    cmd.Parameters.AddWithValue("@Contact", modal.Contact);
+                    cmd.Parameters.AddWithValue("@ProfilePic", modal.ProfilePic);
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    var affectedRows = cmd.ExecuteNonQuery();
+                    if (affectedRows > 0)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
     }
 }

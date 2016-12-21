@@ -1,0 +1,102 @@
+﻿@{
+    ViewBag.Title = "Registration";
+    Layout = "~/Views/_Shared/_Shared.cshtml";
+}
+
+<div class="row">
+    <div class="col-sm-offset-3 col-sm-6">
+
+        <div class="panel panel-primary">
+            <div class="panel-heading"><h2 class="text-center">Signup</h2></div>
+            <div class="panel-body">
+                <form>
+                    <div class="form-group">
+                        <label for="usr">First Name:</label>
+                        <input type="text" class="form-control" id="fname">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="usr">Last Name:</label>
+                        <input type="text" class="form-control" id="lname">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="usr">Email:</label>
+                        <input type="email" class="form-control" id="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="pwd">Password:</label>
+                        <input type="password" class="form-control" id="pwd">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="usr">Mobile:</label>
+                        <input type="number" class="form-control" id="mobile">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="usr">Date of Birth:</label>
+                        <input type="date" class="form-control" id="dob">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="usr">Designation:</label>
+                        <select class="form-control" id="desig">
+                            <option value="1">Project Manager</option>
+                            <option value="2">Team Lead</option>
+                            <option value="3">Senior Software Engineer</option>
+                            <option value="4">Software Engineer</option>
+                            <option value="5">Graduate Engineer Trainee</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary" id="add">Signup</button>
+                    </div>
+
+
+                </form>
+                <hr />
+                <div class="col-sm-12 col-xs-12 text-center">
+                    <h2>Already have an account</h2>
+                    <a class="btn btn-primary" href="@Url.Action("Signin", "Public")">Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).on("click", "#add", function () {
+        if ($('#fname').val() && $('#lname').val() && $('#email').val() && $('#pwd').val() && $('#mobile').val() && $('#dob').val()) {
+            var user = {};
+            user = {
+                "FirstName": $('#fname').val(),
+                "LastName": $('#lname').val(),
+                "Email": $('#email').val(),
+                "Password": $('#pwd').val(),
+                "Mobile": $('#mobile').val(),
+                "DOB": $('#dob').val(),
+                "DesignationId": $('#desig').val(),
+            }
+            $.ajax({
+                url: "http://localhost:49226/ADO/InsertEmployee",
+
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify(user),
+                //crossDomain: true,
+                success: function (res) {
+                    console.log(res);
+                    window.location.replace("@Url.Action("Signin", "PublicPages")");
+                },
+                error: function (err) {
+                }
+            });
+            console.log(user);
+            return false;
+        } else {
+            alert('All Fields are Mandatory.');
+        }
+    })
+</script>
