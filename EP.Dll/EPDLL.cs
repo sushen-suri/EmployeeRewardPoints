@@ -30,7 +30,7 @@ namespace EP.Dll
             try
             {
                 InitializeConnection();
-                using (SqlCommand cmd = new SqlCommand("spGetEmployee", con))
+                using (SqlCommand cmd = new SqlCommand("spSignin", con))
                 {
                     cmd.Parameters.AddWithValue("@EmployeeId", SigninData.EmployeeId);
                     cmd.Parameters.AddWithValue("@Password", SigninData.Password);
