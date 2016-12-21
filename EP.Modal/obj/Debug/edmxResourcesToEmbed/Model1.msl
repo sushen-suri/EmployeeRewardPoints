@@ -4,43 +4,43 @@
     <EntitySetMapping Name="DesignationTables">
       <EntityTypeMapping TypeName="EmployeeRewardPointsModel.DesignationTable">
         <MappingFragment StoreEntitySet="DesignationTable">
-          <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
           <ScalarProperty Name="Title" ColumnName="Title" />
+          <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="EmployeeTables">
       <EntityTypeMapping TypeName="EmployeeRewardPointsModel.EmployeeTable">
         <MappingFragment StoreEntitySet="EmployeeTable">
-          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-          <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-          <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
-          <ScalarProperty Name="ProfilePic" ColumnName="ProfilePic" />
           <ScalarProperty Name="TotalEarnedPoints" ColumnName="TotalEarnedPoints" />
+          <ScalarProperty Name="ProfilePic" ColumnName="ProfilePic" />
+          <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
+          <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="LoginTables">
       <EntityTypeMapping TypeName="EmployeeRewardPointsModel.LoginTable">
         <MappingFragment StoreEntitySet="LoginTable">
-          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-          <ScalarProperty Name="LoginId" ColumnName="LoginId" />
-          <ScalarProperty Name="Email" ColumnName="Email" />
-          <ScalarProperty Name="Password" ColumnName="Password" />
           <ScalarProperty Name="Contact" ColumnName="Contact" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="LoginId" ColumnName="LoginId" />
+          <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="EarnedPoints">
       <EntityTypeMapping TypeName="EmployeeRewardPointsModel.EarnedPoint">
         <MappingFragment StoreEntitySet="EarnedPoints">
-          <ScalarProperty Name="FromEmployeeId" ColumnName="FromEmployeeId" />
-          <ScalarProperty Name="ToEmployeeId" ColumnName="ToEmployeeId" />
-          <ScalarProperty Name="Points" ColumnName="Points" />
-          <ScalarProperty Name="DateGiven" ColumnName="DateGiven" />
-          <ScalarProperty Name="IsRedeemed" ColumnName="IsRedeemed" />
-          <ScalarProperty Name="DateRedeemed" ColumnName="DateRedeemed" />
           <ScalarProperty Name="Reason" ColumnName="Reason" />
+          <ScalarProperty Name="DateRedeemed" ColumnName="DateRedeemed" />
+          <ScalarProperty Name="IsRedeemed" ColumnName="IsRedeemed" />
+          <ScalarProperty Name="DateGiven" ColumnName="DateGiven" />
+          <ScalarProperty Name="Points" ColumnName="Points" />
+          <ScalarProperty Name="ToEmployeeId" ColumnName="ToEmployeeId" />
+          <ScalarProperty Name="FromEmployeeId" ColumnName="FromEmployeeId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
