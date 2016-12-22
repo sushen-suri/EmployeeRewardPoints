@@ -1,4 +1,4 @@
+bin/
+obj/
 *.cache
-/EmployeePoints.v12.suo
-bin
-obj
+EmployeePoints.v12.suo
