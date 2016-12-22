@@ -10,6 +10,10 @@ namespace EmployeePoints.Controllers
     {
         //
         // GET: /Private/
+        public ActionResult DashBoard()
+        {
+            return View();
+        }
 
         public ActionResult Index()
         {

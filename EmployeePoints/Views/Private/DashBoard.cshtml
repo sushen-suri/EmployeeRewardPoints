@@ -1,0 +1,34 @@
+﻿@{
+    ViewBag.Title = "DashBoard";
+    Layout = "~/Views/_Shared/_Shared.cshtml";
+}
+
+<h2>DashBoard</h2>
+<script type="text/javascript">
+    $(document).ready(function () {
+        dashboard();
+    })
+    function dashboard() {
+        var user = { LoginId: 1024 };
+        $.ajax({
+            url: "/ADO/GetEmployee",
+            //url: "/ADO/GetEmployee?empId=1001",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(user),
+            //crossDomain: true,
+            success: function (res) {
+                console.log(res);
+                if (res == null) {
+                    toastr["error"]("Enter Correct Details.")
+                } else {
+                    localStorage.setItem('empid', res.EmployeeId);
+                }
+
+            },
+            error: function (err) {
+                toastr["error"](err);
+            }
+        });
+    }
+</script>

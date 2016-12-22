@@ -28,4 +28,17 @@ namespace EP.Bo
         public int DesignationId { get; set; }
         public string ProfilePic { get; set; }
     }
+
+    public class GetEmployee
+    {
+        public string EmployeeName { get; set; }
+        public string Title { get; set; }
+        public string ProfilePic { get; set; }
+        public long? TotalEarnedPoints { get; set; }
+        public Int64 LoginId { get; set; }
+        public long EmployeeId { get; set; }
+        public string Email { get; set; }
+        public string Contact { get; set; }
+        public DateTime DateCreated { get; set; }
+    }
 }

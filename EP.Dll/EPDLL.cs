@@ -88,5 +88,44 @@ namespace EP.Dll
                 con.Close();
             }
         }
+
+        public List<GetEmployee> GetEmployee(Int64? empId = null)
+        {
+            var employeeList = new List<GetEmployee>();
+            try
+            {
+                InitializeConnection();
+                using (SqlCommand cmd = new SqlCommand("spGetEmployee", con))
+                {
+                    cmd.Parameters.AddWithValue("@LoginId", empId);
+
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+                    da.Fill(ds);
+
+                    var dt = ds.Tables[0];
+
+                    employeeList =  dt.AsEnumerable().Select(a => new GetEmployee
+                    {
+                        EmployeeName = Convert.ToString(a["EmployeeName"]),
+                        Title = Convert.ToString(a["Title"]),
+                        EmployeeId = Convert.ToInt64(a["EmployeeId"]),
+                        ProfilePic = Convert.ToString(a["ProfilePic"]),
+                        TotalEarnedPoints = Convert.ToInt64(a["TotalEarnedPoints"]),
+                        LoginId = Convert.ToInt64(a["LoginId"]),
+                        Email = Convert.ToString(a["Email"]),
+                        Contact = Convert.ToString(a["Contact"]),
+                        DateCreated = Convert.ToDateTime(a["DateCreated"])
+                    }).ToList();
+                }
+                return employeeList;
+            }
+            catch (Exception)
+            {
+                return new List<GetEmployee>();
+            }
+        }
     }
 }

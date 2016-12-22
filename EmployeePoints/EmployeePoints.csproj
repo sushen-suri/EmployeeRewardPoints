@@ -157,6 +157,9 @@
   <ItemGroup>
     <Content Include="Views\Public\Registration.cshtml" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Private\DashBoard.cshtml" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

@@ -21,5 +21,9 @@ namespace EP.Bll
         {
             return epObj.Registration(modal);
         }
+        public List<GetEmployee> GetEmployee(Int64? empId = null)
+        {
+            return epObj.GetEmployee(empId);
+        }
     }
 }
