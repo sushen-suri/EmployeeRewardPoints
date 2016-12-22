@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="EmployeeRewardPointsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EmployeeRewardPointsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="DesignationTable">
           <Key>
             <PropertyRef Name="DesignationId" />
@@ -99,30 +99,43 @@ FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
             <End Role="LoginTable" EntitySet="LoginTable" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EmployeeRewardPointsModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="EmployeeRewardPointsEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DesignationTables" EntityType="EmployeeRewardPointsModel.DesignationTable" />
+          <EntitySet Name="EmployeeTables" EntityType="EmployeeRewardPointsModel.EmployeeTable" />
+          <EntitySet Name="LoginTables" EntityType="EmployeeRewardPointsModel.LoginTable" />
+          <EntitySet Name="EarnedPoints" EntityType="EmployeeRewardPointsModel.EarnedPoint" />
+          <AssociationSet Name="FK_EmployeeTable_DesignationTable" Association="EmployeeRewardPointsModel.FK_EmployeeTable_DesignationTable">
+            <End Role="DesignationTable" EntitySet="DesignationTables" />
+            <End Role="EmployeeTable" EntitySet="EmployeeTables" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LoginTable_EmployeeTable" Association="EmployeeRewardPointsModel.FK_LoginTable_EmployeeTable">
+            <End Role="EmployeeTable" EntitySet="EmployeeTables" />
+            <End Role="LoginTable" EntitySet="LoginTables" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="DesignationTable">
           <Key>
             <PropertyRef Name="DesignationId" />
           </Key>
           <Property Name="DesignationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Title" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="EmployeeTables" Relationship="Self.FK_EmployeeTable_DesignationTable" FromRole="DesignationTable" ToRole="EmployeeTable" />
+          <Property Name="Title" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EmployeeTables" Relationship="EmployeeRewardPointsModel.FK_EmployeeTable_DesignationTable" FromRole="DesignationTable" ToRole="EmployeeTable" />
         </EntityType>
         <EntityType Name="EmployeeTable">
           <Key>
             <PropertyRef Name="EmployeeId" />
           </Key>
           <Property Name="EmployeeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EmployeeName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="EmployeeName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="DesignationId" Type="Int32" Nullable="false" />
-          <Property Name="ProfilePic" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ProfilePic" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="TotalEarnedPoints" Type="Int64" Nullable="false" />
-          <NavigationProperty Name="DesignationTable" Relationship="Self.FK_EmployeeTable_DesignationTable" FromRole="EmployeeTable" ToRole="DesignationTable" />
-          <NavigationProperty Name="LoginTables" Relationship="Self.FK_LoginTable_EmployeeTable" FromRole="EmployeeTable" ToRole="LoginTable" />
+          <NavigationProperty Name="DesignationTable" Relationship="EmployeeRewardPointsModel.FK_EmployeeTable_DesignationTable" FromRole="EmployeeTable" ToRole="DesignationTable" />
+          <NavigationProperty Name="LoginTables" Relationship="EmployeeRewardPointsModel.FK_LoginTable_EmployeeTable" FromRole="EmployeeTable" ToRole="LoginTable" />
         </EntityType>
         <EntityType Name="LoginTable">
           <Key>
@@ -130,10 +143,10 @@ FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
           </Key>
           <Property Name="EmployeeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="LoginId" Type="Int64" Nullable="false" />
-          <Property Name="Email" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Password" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Contact" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="EmployeeTable" Relationship="Self.FK_LoginTable_EmployeeTable" FromRole="LoginTable" ToRole="EmployeeTable" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Contact" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="EmployeeTable" Relationship="EmployeeRewardPointsModel.FK_LoginTable_EmployeeTable" FromRole="LoginTable" ToRole="EmployeeTable" />
         </EntityType>
         <EntityType Name="EarnedPoint">
           <Key>
@@ -150,11 +163,11 @@ FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
           <Property Name="DateGiven" Type="DateTime" Nullable="false" Precision="0" />
           <Property Name="IsRedeemed" Type="Boolean" Nullable="false" />
           <Property Name="DateRedeemed" Type="DateTime" Precision="0" />
-          <Property Name="Reason" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Reason" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="FK_EmployeeTable_DesignationTable">
-          <End Role="DesignationTable" Type="Self.DesignationTable" Multiplicity="1" />
-          <End Role="EmployeeTable" Type="Self.EmployeeTable" Multiplicity="*" />
+          <End Type="EmployeeRewardPointsModel.DesignationTable" Role="DesignationTable" Multiplicity="1" />
+          <End Type="EmployeeRewardPointsModel.EmployeeTable" Role="EmployeeTable" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="DesignationTable">
               <PropertyRef Name="DesignationId" />
@@ -165,8 +178,8 @@ FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_LoginTable_EmployeeTable">
-          <End Role="EmployeeTable" Type="Self.EmployeeTable" Multiplicity="1" />
-          <End Role="LoginTable" Type="Self.LoginTable" Multiplicity="*" />
+          <End Type="EmployeeRewardPointsModel.EmployeeTable" Role="EmployeeTable" Multiplicity="1" />
+          <End Type="EmployeeRewardPointsModel.LoginTable" Role="LoginTable" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="EmployeeTable">
               <PropertyRef Name="EmployeeId" />
@@ -176,20 +189,6 @@ FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="EmployeeRewardPointsEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="DesignationTables" EntityType="Self.DesignationTable" />
-          <EntitySet Name="EmployeeTables" EntityType="Self.EmployeeTable" />
-          <EntitySet Name="LoginTables" EntityType="Self.LoginTable" />
-          <EntitySet Name="EarnedPoints" EntityType="Self.EarnedPoint" />
-          <AssociationSet Name="FK_EmployeeTable_DesignationTable" Association="Self.FK_EmployeeTable_DesignationTable">
-            <End Role="DesignationTable" EntitySet="DesignationTables" />
-            <End Role="EmployeeTable" EntitySet="EmployeeTables" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LoginTable_EmployeeTable" Association="Self.FK_LoginTable_EmployeeTable">
-            <End Role="EmployeeTable" EntitySet="EmployeeTables" />
-            <End Role="LoginTable" EntitySet="LoginTables" />
-          </AssociationSet>
-        </EntityContainer>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -199,43 +198,43 @@ FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
           <EntitySetMapping Name="DesignationTables">
             <EntityTypeMapping TypeName="EmployeeRewardPointsModel.DesignationTable">
               <MappingFragment StoreEntitySet="DesignationTable">
-                <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EmployeeTables">
             <EntityTypeMapping TypeName="EmployeeRewardPointsModel.EmployeeTable">
               <MappingFragment StoreEntitySet="EmployeeTable">
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
-                <ScalarProperty Name="ProfilePic" ColumnName="ProfilePic" />
                 <ScalarProperty Name="TotalEarnedPoints" ColumnName="TotalEarnedPoints" />
+                <ScalarProperty Name="ProfilePic" ColumnName="ProfilePic" />
+                <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
+                <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="LoginTables">
             <EntityTypeMapping TypeName="EmployeeRewardPointsModel.LoginTable">
               <MappingFragment StoreEntitySet="LoginTable">
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
-                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
-                <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
+                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="EarnedPoints">
             <EntityTypeMapping TypeName="EmployeeRewardPointsModel.EarnedPoint">
               <MappingFragment StoreEntitySet="EarnedPoints">
-                <ScalarProperty Name="FromEmployeeId" ColumnName="FromEmployeeId" />
-                <ScalarProperty Name="ToEmployeeId" ColumnName="ToEmployeeId" />
-                <ScalarProperty Name="Points" ColumnName="Points" />
-                <ScalarProperty Name="DateGiven" ColumnName="DateGiven" />
-                <ScalarProperty Name="IsRedeemed" ColumnName="IsRedeemed" />
-                <ScalarProperty Name="DateRedeemed" ColumnName="DateRedeemed" />
                 <ScalarProperty Name="Reason" ColumnName="Reason" />
+                <ScalarProperty Name="DateRedeemed" ColumnName="DateRedeemed" />
+                <ScalarProperty Name="IsRedeemed" ColumnName="IsRedeemed" />
+                <ScalarProperty Name="DateGiven" ColumnName="DateGiven" />
+                <ScalarProperty Name="Points" ColumnName="Points" />
+                <ScalarProperty Name="ToEmployeeId" ColumnName="ToEmployeeId" />
+                <ScalarProperty Name="FromEmployeeId" ColumnName="FromEmployeeId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
