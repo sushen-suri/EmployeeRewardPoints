@@ -1,2 +1,4 @@
 *.cache
 /EmployeePoints.v12.suo
+bin
+obj
