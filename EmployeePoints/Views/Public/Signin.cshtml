@@ -56,8 +56,8 @@
                     if (res == null) {
                         toastr["error"]("Enter Correct Details.")
                     } else {
-                        localStorage.setItem('empid', res.EmployeeId);
-                        //window.location.replace("@Url.Action("Dashboard", "Private")");
+                        localStorage.setItem('currentEmployee', res.res.LoginId);
+                        window.location.replace("@Url.Action("Dashboard", "Private")");
                     }
 
                 },

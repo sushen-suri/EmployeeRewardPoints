@@ -1,0 +1,21 @@
+﻿@{
+    ViewBag.Title = "Logout";
+    Layout = "~/Views/Private/Index.cshtml";
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (localStorage.getItem("currentEmployee") != null) {
+            localStorage.removeItem("currentEmployee");
+            index();
+            $("#msg").html("You have been successfully logged out");
+        }
+        else {
+            $("#msg").html("Login First");
+        }
+    })
+</script>
+<h2>Logout</h2>
+<div id="msg"></div>
+<br /><br />
+Click <a href="@Url.Action("Signin", "Public")">HERE</a> to login

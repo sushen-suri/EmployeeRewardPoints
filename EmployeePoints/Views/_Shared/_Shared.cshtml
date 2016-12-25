@@ -13,7 +13,46 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-
+    <script>
+    $(document).ready(function () {
+        index();
+    })
+    function index() {
+        if (localStorage.getItem("currentEmployee") != null) {
+            $('#logout').css("display", "none");
+            $("#login").css("display", "block");
+        }
+        if (localStorage.getItem("currentEmployee") == null) {
+            $('#logout').css("display", "block");
+            $("#login").css("display", "none");
+        }
+    }
+    </script>
+    <div>
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">MyMVCProject</a>
+                </div>
+                <div class="collapse navbar-collapse" id="myNavbar">
+                    <ul class="nav navbar-nav navbar-right" id="login">
+                        <li><a href="@Url.Action("DashBoard", "Private")">DashBorad</a></li>
+                        <li><a href="@Url.Action("DonatePoints", "Private")">Donate Points</a></li>
+                        <li><a href="@Url.Action("Logout", "Private")">LogOut</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right" id="logout">
+                        <li><a href="@Url.Action("Registration", "Public")"><span class="glyphicon glyphicon-user"></span>SignUp</a></li>
+                        <li><a href="@Url.Action("Signin", "Public")"><span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
 </head>
 <body>
     <div class="container">

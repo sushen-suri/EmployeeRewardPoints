@@ -20,5 +20,13 @@ namespace EmployeePoints.Controllers
             return View();
         }
 
+        public ActionResult Logout()
+        {
+            return View();
+        }
+        public ActionResult DonatePoints()
+        {
+            return View();
+        }
     }
 }

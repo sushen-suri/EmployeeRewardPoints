@@ -89,9 +89,9 @@ namespace EP.Dll
             }
         }
 
-        public List<GetEmployee> GetEmployee(Int64? empId = null)
+        public List<Employee> GetEmployee(Int64? empId = null)
         {
-            var employeeList = new List<GetEmployee>();
+            var employeeList = new List<Employee>();
             try
             {
                 InitializeConnection();
@@ -107,7 +107,7 @@ namespace EP.Dll
 
                     var dt = ds.Tables[0];
 
-                    employeeList =  dt.AsEnumerable().Select(a => new GetEmployee
+                    employeeList = dt.AsEnumerable().Select(a => new Employee
                     {
                         EmployeeName = Convert.ToString(a["EmployeeName"]),
                         Title = Convert.ToString(a["Title"]),
@@ -124,7 +124,98 @@ namespace EP.Dll
             }
             catch (Exception)
             {
-                return new List<GetEmployee>();
+                return new List<Employee>();
+            }
+        }
+
+
+        public bool DonatePoints(TransferPoints data)
+        {
+            try
+            {
+                InitializeConnection();
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("spTransferPoints", con))
+                {
+                    cmd.Parameters.AddWithValue("@FromEmployeeId", data.FromEmployeeId);
+                    cmd.Parameters.AddWithValue("@ToEmployeeId", data.ToEmployeeId);
+                    cmd.Parameters.AddWithValue("@Points", data.Points);
+                    cmd.Parameters.AddWithValue("@Reason", data.Reason);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    var affectedRows = cmd.ExecuteNonQuery();
+                    if (affectedRows > 0)
+                        return true;
+                    else
+                        return false;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+        public List<GraphPoints> PointsGraph(EmpSignin Id)
+        {
+            try
+            {
+                InitializeConnection();
+                using (SqlCommand cmd = new SqlCommand("spPointsGraph", con))
+                {
+                    cmd.Parameters.AddWithValue("@ToEmployeeId", Id.EmployeeId);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+                    da.Fill(ds);
+
+                    var dt = ds.Tables[0];
+
+                    return dt.AsEnumerable().Select(a => new GraphPoints
+                    {
+                        DateGiven = Convert.ToDateTime(a["DateGiven"]),
+                        Points = Convert.ToInt64(a["TotalPoints"])
+                    }).ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<GraphPoints>();
+            }
+        }
+
+        public Points PointsBetweenDates(PointsBetween date)
+        {
+            try
+            {
+                InitializeConnection();
+                using (SqlCommand cmd = new SqlCommand("spPointsBetweenDates", con))
+                {
+                    cmd.Parameters.AddWithValue("@ToEmployeeId", date.EmployeeId);
+                    cmd.Parameters.AddWithValue("@FromDate", date.FromDate);
+                    cmd.Parameters.AddWithValue("@ToDate", date.ToDate);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+                    da.Fill(ds);
+
+                    var dt = ds.Tables[0];
+
+                    return dt.AsEnumerable().Select(a => new Points
+                    {
+                        EarnedPoints = Convert.ToInt64(a["TotalPoints"])
+                    }).FirstOrDefault();
+                }
+            }
+            catch (Exception)
+            {
+                return new Points();
             }
         }
     }

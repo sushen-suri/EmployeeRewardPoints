@@ -1,0 +1,135 @@
+﻿@{
+    ViewBag.Title = "DonatePoints";
+    Layout = "~/Views/Private/Index.cshtml";
+}
+
+<h2>DonatePoints</h2>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        if (localStorage.getItem("currentEmployee") != null) {
+            employeeList();
+        }
+        else {
+            $("#filter").css("display", "none");
+            $("#usersTable thead").css("display", "none");
+            $("#usersTable t").html("you have to login first")
+        }
+    })
+
+
+    function donatePoints(toEmp) {
+        var point = $('#points').val();
+        var reason = $('#reason').val();
+        if (toEmp) {
+            $('#donateForm').attr('data-transferTo', toEmp);
+        } else {
+            if (point && reason) {
+                var user = {};
+                var currEmployee = localStorage.getItem("currentEmployee");
+                user = {
+                    "FromEmployeeId": parseInt(currEmployee),
+                    "ToEmployeeId": parseInt($('#donateForm').attr('data-transferTo')),
+                    "Points": $('#points').val(),
+                    "Reason": $('#reason').val(),
+                }
+                $.ajax({
+                    url: "/ADO/DonatePoints",
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(user),
+                    //crossDomain: true,
+                    success: function (res) {
+                        console.log(res);
+                    },
+                    error: function (err) {
+                    }
+                });
+                console.log(user);
+                return false;
+            } else {
+                toastr["error"]('All Fields are Mandatory.');
+            }
+        }
+    }
+
+
+    function employeeList() {
+        $.ajax({
+            url: "/ADO/GetEmployee",
+            type: "GET",
+            contentType: "application/json; charset=utf-8",
+            success: function (res) {
+                console.log(res)
+                fillTable(res.res, '#usersTable tbody');
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        })
+    }
+    function fillTable(res, id) {
+        var html = "";
+        $.each(res, function (k, v) {
+            html += "<tr><td>" + v.EmployeeId + "<td>" + v.EmployeeName + " <td>" + v.Contact + "<td>" + v.Email + "<td>" + v.Title + "</td><td><button tpye='button'  data-toggle='modal' data-target='#donateForm' onclick='donatePoints(" + v.EmployeeId + ")'>Appreciate</button></tr>";
+
+        })
+        $(id).html(html);
+    }
+</script>
+<div id="filter">
+    <input type='text' placeholder='FirstName' id='first' />
+    <input type='text' placeholder='LastName' id='last' />
+    <input type='text' placeholder='Email' id='mail' />
+    <input type='text' placeholder='Contact' id='mob' />
+    <button type='button' id='filted' onclick='filterList()'>Filter</button>
+</div>
+<div class="table-responsive">
+    <table class="table table-hover" id="usersTable">
+        <thead>
+            <tr>
+                <th>EmployeeId</th>
+                <th>Name</th>
+                <th>contact</th>
+                <th>Email Id</th>
+                <th>Designation</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+
+<div id="donateForm" class="modal fade" role="dialog" style="color:#333333">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form method="POST" class="form-horizontal">
+                    <span class="close" data-dismiss="modal">&times;</span>
+                    <br />
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">
+                            Points :
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="number" class="form-control" id="points" , name="Points">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">
+                            Reason :
+                        </label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control" id="reason" , name="Reason">
+                        </div>
+                    </div>
+                    <div style="align-content:inherit">
+                        <button type="button" id="donateBtn" class="btn btn-primary" data-dismiss="modal" value="Submit" onclick="donatePoints()">Appreciate</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -21,9 +21,21 @@ namespace EP.Bll
         {
             return epObj.Registration(modal);
         }
-        public List<GetEmployee> GetEmployee(Int64? empId = null)
+        public List<Employee> GetEmployee(Int64? empId = null)
         {
             return epObj.GetEmployee(empId);
+        }
+        public bool DonatePoints(TransferPoints data)
+        {
+            return epObj.DonatePoints(data);
+        }
+        public List<GraphPoints> PointsGraph(EmpSignin Id)
+        {
+            return epObj.PointsGraph(Id);
+        }
+        public Points PointsBetweenDates(PointsBetween date)
+        {
+            return epObj.PointsBetweenDates(date);
         }
     }
 }

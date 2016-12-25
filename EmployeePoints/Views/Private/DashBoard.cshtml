@@ -1,34 +1,111 @@
 ﻿@{
     ViewBag.Title = "DashBoard";
-    Layout = "~/Views/_Shared/_Shared.cshtml";
+    Layout = "~/Views/Private/Index.cshtml";
 }
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+
 
 <h2>DashBoard</h2>
 <script type="text/javascript">
     $(document).ready(function () {
-        dashboard();
+        var dashHtml = localStorage.getItem("currentEmployee");
+        if (dashHtml != null) {
+            dashBoard(parseInt(dashHtml));
+            graphPoints(dashHtml);
+            pointsBetweenDates(dashHtml);
+
+            dateBefore(7);
+        }
+        else {
+            $("#tab").html("<b>Go to login page</b>");
+        }
     })
-    function dashboard() {
-        var user = { LoginId: 1024 };
+    function dashBoard(loginId) {
+        //var user = { LoginId: 1024 };
         $.ajax({
-            url: "/ADO/GetEmployee",
-            //url: "/ADO/GetEmployee?empId=1001",
+            //url: "/ADO/GetEmployee",
+            url: "/ADO/GetEmployee?empId=" + loginId,
             type: "GET",
             contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(user),
+            //data: JSON.stringify(user),
             //crossDomain: true,
             success: function (res) {
                 console.log(res);
-                if (res == null) {
-                    toastr["error"]("Enter Correct Details.")
-                } else {
-                    localStorage.setItem('empid', res.EmployeeId);
-                }
-
+                var html = "<b>EmployeeName : </b>" + res.res[0].EmployeeName + "<br>"
+                + "<b>Email ID : </b>" + res.res[0].Email + "<br>"
+                + "<b>Contact : </b>" + res.res[0].Contact + "<br>"
+                + "<b>Employee ID : </b>" + res.res[0].EmployeeId + "<br>"
+                + "<b>TotalEarnedPoints : </b>" + res.res[0].TotalEarnedPoints + "<br>"
+                + "<b>Designation : </b>" + res.res[0].Title + "<br>"
+                $("#tab").html(html);
             },
             error: function (err) {
                 toastr["error"](err);
             }
         });
     }
+    function graphPoints(id) {
+        var a = { EmployeeId: id };
+        $.ajax({
+            url: "/ADO/PointsGraph",
+            type: "POST",
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(a),
+            success: function (res) {
+                console.log(res);
+                generateChart(res.res);
+            },
+            error: function (res) {
+                console.log(res);
+            }
+        })
+    }
+
+    function generateChart(res) {
+        var chart = c3.generate({
+            
+            data: {
+                bindto: '#chart',
+                columns: [
+                    ['data1', 30, 200, 100, 400, 150, 250],
+                    ['data2', 50, 20, 10, 40, 15, 25]
+                ]
+            }
+        });
+
+    }
+
+    function pointsBetweenDates(id) {
+        var today = new Date();
+        var a = { EmployeeId: id, FromDate: '2016-12-22', ToDate: today };
+        $.ajax({
+            url: "/ADO/PointsBetweenDates",
+            type: "POST",
+            contentType: "application/json",
+            dataType: " json",
+            data: JSON.stringify(a),
+            success: function (res) {
+                console.log(res);
+            },
+            error: function (res) {
+                console.log(res)
+            }
+        })
+    }
+    function dateBefore(days)
+    {
+        var date = new Date();
+        var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
+        console.log(last);
+        date.setDate(date.getDate() - 7);
+        var dateMsg = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getYear();
+        console.log(dateMsg);
+    }
 </script>
+
+
+<div id="tab"></div>
+<div id="chart"></div>
