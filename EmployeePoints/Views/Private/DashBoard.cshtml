@@ -2,21 +2,28 @@
     ViewBag.Title = "DashBoard";
     Layout = "~/Views/Private/Index.cshtml";
 }
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.css" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.min.js"></script>
+
+<script src="https://d3js.org/d3.v3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/c3/0.4.11/c3.css" />
 
 
 <h2>DashBoard</h2>
+<hr />
+
 <script type="text/javascript">
+    var day = 7;
     $(document).ready(function () {
+        $('#dashNav').addClass('activeNav');
         var dashHtml = localStorage.getItem("currentEmployee");
         if (dashHtml != null) {
             dashBoard(parseInt(dashHtml));
             graphPoints(dashHtml);
-            pointsBetweenDates(dashHtml);
+            day=7;
+            pointsBetweenDates("#DayChart7",7);
+            pointsBetweenDates("#DayChart30",30);
+            pointsBetweenDates("#DayChart365",365);
 
-            dateBefore(7);
         }
         else {
             $("#tab").html("<b>Go to login page</b>");
@@ -33,12 +40,12 @@
             //crossDomain: true,
             success: function (res) {
                 console.log(res);
-                var html = "<b>EmployeeName : </b>" + res.res[0].EmployeeName + "<br>"
-                + "<b>Email ID : </b>" + res.res[0].Email + "<br>"
-                + "<b>Contact : </b>" + res.res[0].Contact + "<br>"
-                + "<b>Employee ID : </b>" + res.res[0].EmployeeId + "<br>"
-                + "<b>TotalEarnedPoints : </b>" + res.res[0].TotalEarnedPoints + "<br>"
-                + "<b>Designation : </b>" + res.res[0].Title + "<br>"
+                var html = "<div class='row'><div class='col-xs-6 col-md-4'><strong>EmployeeName : </strong></div><div class='col-xs-6 col-md-8'>" + res.res[0].EmployeeName + "</div></div>"
+                + "<div class='row'><div class='col-xs-6 col-md-4'><strong>Email ID : </strong></div><div class='col-xs-6 col-md-8'>" + res.res[0].Email + "</div></div>"
+                + "<div class='row'><div class='col-xs-6 col-md-4'><strong>Contact : </strong></div><div class='col-xs-6 col-md-8'>" + res.res[0].Contact + "</div></div>"
+                + "<div class='row'><div class='col-xs-6 col-md-4'><strong>Employee ID : </strong></div><div class='col-xs-6 col-md-8'>" + res.res[0].EmployeeId + "</div></div>"
+                + "<div class='row'><div class='col-xs-6 col-md-4'><strong>TotalEarnedPoints : </strong></div><div class='col-xs-6 col-md-8'>" + res.res[0].TotalEarnedPoints + "</div></div>"
+                + "<div class='row'><div class='col-xs-6 col-md-4'><strong>Designation : </strong></div><div class='col-xs-6 col-md-8'>" + res.res[0].Title + "</div></div>";
                 $("#tab").html(html);
             },
             error: function (err) {
@@ -46,6 +53,7 @@
             }
         });
     }
+
     function graphPoints(id) {
         var a = { EmployeeId: id };
         $.ajax({
@@ -65,22 +73,43 @@
     }
 
     function generateChart(res) {
+        for (var i = 0; i < res.length; i++) {
+            res[i].DateGiven = parseInt(res[i].DateGiven.substr(6, 13));
+        }
+        console.log(res);
         var chart = c3.generate({
-            
             data: {
                 bindto: '#chart',
-                columns: [
-                    ['data1', 30, 200, 100, 400, 150, 250],
-                    ['data2', 50, 20, 10, 40, 15, 25]
-                ]
+                json: res,
+                x: 'x',
+                xFormat: '%Y',
+                keys: {
+                    x: "DateGiven",
+                    value: ['Points']
+                },
+                type:'bar'
+            },
+            bar: {
+                width: {
+                    ratio: 0.5 // this makes bar width 50% of length between ticks
+                }
+            },
+            axis: {
+                x: {
+                    type: 'timeseries',
+                    localtime: true,
+                    tick: {
+                        format: '%d-%m-%Y'
+                    }
+                }
             }
         });
 
     }
 
-    function pointsBetweenDates(id) {
+    function pointsBetweenDates(id,days) {
         var today = new Date();
-        var a = { EmployeeId: id, FromDate: '2016-12-22', ToDate: today };
+        var a = { EmployeeId: localStorage.getItem("currentEmployee"), FromDate: dateBefore(days ? days : day), ToDate: today };
         $.ajax({
             url: "/ADO/PointsBetweenDates",
             type: "POST",
@@ -89,23 +118,80 @@
             data: JSON.stringify(a),
             success: function (res) {
                 console.log(res);
+                $(id).html("<h3>" + res.res.EarnedPoints + "</h3>")
             },
             error: function (res) {
                 console.log(res)
             }
         })
     }
+
     function dateBefore(days)
     {
         var date = new Date();
         var last = new Date(date.getTime() - (days * 24 * 60 * 60 * 1000));
-        console.log(last);
-        date.setDate(date.getDate() - 7);
-        var dateMsg = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getYear();
-        console.log(dateMsg);
+        
+        return last;
     }
 </script>
 
 
-<div id="tab"></div>
-<div id="chart"></div>
+<div class="row">
+    <div class="col-sm-6 col-md-6 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">Personal Info</div>
+            <div class="panel-body">
+                <div id="tab"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-md-6 col-xs-12">
+        <div class="row">
+            <div class="col-sm-6 col-md-6 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Points Earned in Last 7 Days</div>
+                    <div class="panel-body">
+                        <div id="DayChart7"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Points Earned in Last 30 Days</div>
+                    <div class="panel-body">
+                        <div id="DayChart30"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-xs-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Points Earned in Last 365 Days</div>
+                    <div class="panel-body">
+                        <div id="DayChart365"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ </div>
+<div class="panel panel-default">
+    <div class="panel-heading">Overall Points Transferred</div>
+    <div class="panel-body">
+        <div id="chart"></div>
+    </div>
+</div>
+
+
+<style>
+    .panel-heading{
+        background-color:#135b96!important;
+        color:white!important;
+    }
+    #DayChart30,#DayChart365,#DayChart7{
+        text-align: center;
+    }
+    #tab .row{
+        padding-top:7px;
+        padding-bottom:7px;
+    }
+</style>

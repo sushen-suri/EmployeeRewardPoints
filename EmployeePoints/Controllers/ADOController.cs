@@ -225,6 +225,7 @@ namespace EmployeePoints.Controllers
         public JsonResult CheckExistingEmail(EmpSignin check)
         {
             EPBLL bll = new EPBLL();
+            
             var temp =  bll.CheckExistingEmail(check);
             //return temp;
             return Json(new { res = temp }, JsonRequestBehavior.DenyGet);

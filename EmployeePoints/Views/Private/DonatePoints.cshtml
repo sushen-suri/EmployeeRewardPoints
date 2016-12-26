@@ -3,10 +3,11 @@
     Layout = "~/Views/Private/Index.cshtml";
 }
 
-<h2>DonatePoints</h2>
-
+<h2>Reward Points</h2>
+<hr />
 <script type="text/javascript">
     $(document).ready(function () {
+        $('#rewardNav').addClass('activeNav');
         if (localStorage.getItem("currentEmployee") != null) {
             employeeList();
         }
@@ -17,13 +18,14 @@
         }
     })
 
-
     function donatePoints(toEmp) {
-        var point = $('#points').val();
-        var reason = $('#reason').val();
         if (toEmp) {
             $('#donateForm').attr('data-transferTo', toEmp);
+            $('#points').val('');
+            $('#reason').val('');
         } else {
+            var point = $('#points').val();
+            var reason = $('#reason').val();
             if (point && reason) {
                 var user = {};
                 var currEmployee = localStorage.getItem("currentEmployee");
@@ -41,6 +43,7 @@
                     //crossDomain: true,
                     success: function (res) {
                         console.log(res);
+                        toastr["success"](res.message);
                     },
                     error: function (err) {
                     }
@@ -52,7 +55,6 @@
             }
         }
     }
-
 
     function employeeList() {
         $.ajax({
@@ -68,29 +70,27 @@
             }
         })
     }
+
     function fillTable(res, id) {
         var html = "";
         $.each(res, function (k, v) {
-            html += "<tr><td>" + v.EmployeeId + "<td>" + v.EmployeeName + " <td>" + v.Contact + "<td>" + v.Email + "<td>" + v.Title + "</td><td><button tpye='button'  data-toggle='modal' data-target='#donateForm' onclick='donatePoints(" + v.EmployeeId + ")'>Appreciate</button></tr>";
-
+            html += "<tr><td>" + v.EmployeeId + "<td>" + v.EmployeeName + " <td>" + v.Contact + "<td>" + v.Email + "<td>" + v.Title + "</td><td><button tpye='button' class='btn btn-primary' data-toggle='modal' data-target='#donateForm' onclick='donatePoints(" + v.EmployeeId + ")'>Appreciate</button></tr>";
         })
         $(id).html(html);
     }
 </script>
-<div id="filter">
-    <input type='text' placeholder='FirstName' id='first' />
-    <input type='text' placeholder='LastName' id='last' />
-    <input type='text' placeholder='Email' id='mail' />
-    <input type='text' placeholder='Contact' id='mob' />
+
+@*<div id="filter">
+    <input type='text' placeholder='Name' id='name' />
     <button type='button' id='filted' onclick='filterList()'>Filter</button>
-</div>
+</div>*@
 <div class="table-responsive">
     <table class="table table-hover" id="usersTable">
         <thead>
             <tr>
                 <th>EmployeeId</th>
                 <th>Name</th>
-                <th>contact</th>
+                <th>Contact</th>
                 <th>Email Id</th>
                 <th>Designation</th>
                 <th>Action</th>
@@ -101,11 +101,11 @@
 </div>
 
 
-<div id="donateForm" class="modal fade" role="dialog" style="color:#333333">
+<div id="donateForm" class="modal fade" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body">
-                <form method="POST" class="form-horizontal">
+                <form class="form-horizontal">
                     <span class="close" data-dismiss="modal">&times;</span>
                     <br />
                     <div class="form-group">
@@ -124,12 +124,29 @@
                             <input type="text" class="form-control" id="reason" , name="Reason">
                         </div>
                     </div>
-                    <div style="align-content:inherit">
+                    <div id="modalFooter">
                         <button type="button" id="donateBtn" class="btn btn-primary" data-dismiss="modal" value="Submit" onclick="donatePoints()">Appreciate</button>
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" value="Cancel">Cancel</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" value="Cancel">Cancel</button>
                     </div>
+                    
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+<style>
+    #usersTable thead{
+        background-color: #135b96!important;
+        color: white!important;
+    }
+    #usersTable thead th:first-child {
+        border-top-left-radius:4px;
+    }
+    #usersTable thead th:last-child {
+        border-top-right-radius:4px;
+    }
+    #modalFooter{
+        text-align:right;
+    }
+</style>

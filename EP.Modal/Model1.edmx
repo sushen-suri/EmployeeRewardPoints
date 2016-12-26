@@ -20,33 +20,37 @@ warning 6002: The table/view 'EmployeeRewardPoints.dbo.EarnedPoints' does not ha
             <PropertyRef Name="ToEmployeeId" />
             <PropertyRef Name="Points" />
             <PropertyRef Name="DateGiven" />
-            <PropertyRef Name="IsRedeemed" />
             <PropertyRef Name="Reason" />
           </Key>
           <Property Name="FromEmployeeId" Type="bigint" Nullable="false" />
           <Property Name="ToEmployeeId" Type="bigint" Nullable="false" />
           <Property Name="Points" Type="int" Nullable="false" />
           <Property Name="DateGiven" Type="date" Nullable="false" />
-          <Property Name="IsRedeemed" Type="bit" Nullable="false" />
+          <Property Name="IsRedeemed" Type="bit" />
           <Property Name="DateRedeemed" Type="date" />
           <Property Name="Reason" Type="varchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="EmployeeTable">
           <Key>
-            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="LoginId" />
           </Key>
-          <Property Name="EmployeeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LoginId" Type="bigint" Nullable="false" />
           <Property Name="EmployeeName" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="DesignationId" Type="int" Nullable="false" />
-          <Property Name="ProfilePic" Type="varchar(max)" Nullable="false" />
-          <Property Name="TotalEarnedPoints" Type="bigint" Nullable="false" />
+          <Property Name="ProfilePic" Type="varchar(max)" />
+          <Property Name="TotalEarnedPoints" Type="bigint" />
+          <Property Name="DateCreated" Type="date" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="DateDeleted" Type="date" />
+          <Property Name="TotalRedeemedPoints" Type="bigint" />
         </EntityType>
         <EntityType Name="LoginTable">
           <Key>
-            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="LoginId" />
           </Key>
-          <Property Name="EmployeeId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LoginId" Type="bigint" Nullable="false" />
+          <Property Name="LoginId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmployeeId" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Email" Type="varchar" MaxLength="200" Nullable="false" />
           <Property Name="Password" Type="varchar" MaxLength="100" Nullable="false" />
           <Property Name="Contact" Type="varchar" MaxLength="50" Nullable="false" />
@@ -63,14 +67,14 @@ warning 6002: The table/view 'EmployeeRewardPoints.dbo.EarnedPoints' does not ha
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LoginTable_EmployeeTable">
-          <End Role="EmployeeTable" Type="Self.EmployeeTable" Multiplicity="1" />
-          <End Role="LoginTable" Type="Self.LoginTable" Multiplicity="*" />
+        <Association Name="FK_EmployeeTable_LoginTable">
+          <End Role="LoginTable" Type="Self.LoginTable" Multiplicity="1" />
+          <End Role="EmployeeTable" Type="Self.EmployeeTable" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="EmployeeTable">
-              <PropertyRef Name="EmployeeId" />
+            <Principal Role="LoginTable">
+              <PropertyRef Name="LoginId" />
             </Principal>
-            <Dependent Role="LoginTable">
+            <Dependent Role="EmployeeTable">
               <PropertyRef Name="LoginId" />
             </Dependent>
           </ReferentialConstraint>
@@ -94,9 +98,9 @@ FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
             <End Role="DesignationTable" EntitySet="DesignationTable" />
             <End Role="EmployeeTable" EntitySet="EmployeeTable" />
           </AssociationSet>
-          <AssociationSet Name="FK_LoginTable_EmployeeTable" Association="Self.FK_LoginTable_EmployeeTable">
-            <End Role="EmployeeTable" EntitySet="EmployeeTable" />
+          <AssociationSet Name="FK_EmployeeTable_LoginTable" Association="Self.FK_EmployeeTable_LoginTable">
             <End Role="LoginTable" EntitySet="LoginTable" />
+            <End Role="EmployeeTable" EntitySet="EmployeeTable" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -112,9 +116,9 @@ FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
             <End Role="DesignationTable" EntitySet="DesignationTables" />
             <End Role="EmployeeTable" EntitySet="EmployeeTables" />
           </AssociationSet>
-          <AssociationSet Name="FK_LoginTable_EmployeeTable" Association="EmployeeRewardPointsModel.FK_LoginTable_EmployeeTable">
-            <End Role="EmployeeTable" EntitySet="EmployeeTables" />
+          <AssociationSet Name="FK_EmployeeTable_LoginTable" Association="EmployeeRewardPointsModel.FK_EmployeeTable_LoginTable">
             <End Role="LoginTable" EntitySet="LoginTables" />
+            <End Role="EmployeeTable" EntitySet="EmployeeTables" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="DesignationTable">
@@ -127,26 +131,31 @@ FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
         </EntityType>
         <EntityType Name="EmployeeTable">
           <Key>
-            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="LoginId" />
           </Key>
-          <Property Name="EmployeeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LoginId" Type="Int64" Nullable="false" />
           <Property Name="EmployeeName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="DesignationId" Type="Int32" Nullable="false" />
-          <Property Name="ProfilePic" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="TotalEarnedPoints" Type="Int64" Nullable="false" />
+          <Property Name="ProfilePic" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="TotalEarnedPoints" Type="Int64" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="DateDeleted" Type="DateTime" Precision="0" />
+          <Property Name="TotalRedeemedPoints" Type="Int64" />
           <NavigationProperty Name="DesignationTable" Relationship="EmployeeRewardPointsModel.FK_EmployeeTable_DesignationTable" FromRole="EmployeeTable" ToRole="DesignationTable" />
-          <NavigationProperty Name="LoginTables" Relationship="EmployeeRewardPointsModel.FK_LoginTable_EmployeeTable" FromRole="EmployeeTable" ToRole="LoginTable" />
+          <NavigationProperty Name="LoginTable" Relationship="EmployeeRewardPointsModel.FK_EmployeeTable_LoginTable" FromRole="EmployeeTable" ToRole="LoginTable" />
         </EntityType>
         <EntityType Name="LoginTable">
           <Key>
-            <PropertyRef Name="EmployeeId" />
+            <PropertyRef Name="LoginId" />
           </Key>
-          <Property Name="EmployeeId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LoginId" Type="Int64" Nullable="false" />
+          <Property Name="LoginId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmployeeId" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="200" FixedLength="false" Unicode="false" />
           <Property Name="Password" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="Contact" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="EmployeeTable" Relationship="EmployeeRewardPointsModel.FK_LoginTable_EmployeeTable" FromRole="LoginTable" ToRole="EmployeeTable" />
+          <NavigationProperty Name="EmployeeTable" Relationship="EmployeeRewardPointsModel.FK_EmployeeTable_LoginTable" FromRole="LoginTable" ToRole="EmployeeTable" />
         </EntityType>
         <EntityType Name="EarnedPoint">
           <Key>
@@ -154,14 +163,13 @@ FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
             <PropertyRef Name="ToEmployeeId" />
             <PropertyRef Name="Points" />
             <PropertyRef Name="DateGiven" />
-            <PropertyRef Name="IsRedeemed" />
             <PropertyRef Name="Reason" />
           </Key>
           <Property Name="FromEmployeeId" Type="Int64" Nullable="false" />
           <Property Name="ToEmployeeId" Type="Int64" Nullable="false" />
           <Property Name="Points" Type="Int32" Nullable="false" />
           <Property Name="DateGiven" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="IsRedeemed" Type="Boolean" Nullable="false" />
+          <Property Name="IsRedeemed" Type="Boolean" />
           <Property Name="DateRedeemed" Type="DateTime" Precision="0" />
           <Property Name="Reason" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
         </EntityType>
@@ -177,19 +185,19 @@ FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_LoginTable_EmployeeTable">
-          <End Type="EmployeeRewardPointsModel.EmployeeTable" Role="EmployeeTable" Multiplicity="1" />
-          <End Type="EmployeeRewardPointsModel.LoginTable" Role="LoginTable" Multiplicity="*" />
+        <Association Name="FK_EmployeeTable_LoginTable">
+          <End Type="EmployeeRewardPointsModel.LoginTable" Role="LoginTable" Multiplicity="1" />
+          <End Type="EmployeeRewardPointsModel.EmployeeTable" Role="EmployeeTable" Multiplicity="0..1" />
           <ReferentialConstraint>
-            <Principal Role="EmployeeTable">
-              <PropertyRef Name="EmployeeId" />
+            <Principal Role="LoginTable">
+              <PropertyRef Name="LoginId" />
             </Principal>
-            <Dependent Role="LoginTable">
+            <Dependent Role="EmployeeTable">
               <PropertyRef Name="LoginId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -206,11 +214,16 @@ FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
           <EntitySetMapping Name="EmployeeTables">
             <EntityTypeMapping TypeName="EmployeeRewardPointsModel.EmployeeTable">
               <MappingFragment StoreEntitySet="EmployeeTable">
+                <ScalarProperty Name="TotalRedeemedPoints" ColumnName="TotalRedeemedPoints" />
+                <ScalarProperty Name="DateDeleted" ColumnName="DateDeleted" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="TotalEarnedPoints" ColumnName="TotalEarnedPoints" />
                 <ScalarProperty Name="ProfilePic" ColumnName="ProfilePic" />
                 <ScalarProperty Name="DesignationId" ColumnName="DesignationId" />
                 <ScalarProperty Name="EmployeeName" ColumnName="EmployeeName" />
-                <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -220,8 +233,8 @@ FROM [dbo].[EarnedPoints] AS [EarnedPoints]</DefiningQuery>
                 <ScalarProperty Name="Contact" ColumnName="Contact" />
                 <ScalarProperty Name="Password" ColumnName="Password" />
                 <ScalarProperty Name="Email" ColumnName="Email" />
-                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
                 <ScalarProperty Name="EmployeeId" ColumnName="EmployeeId" />
+                <ScalarProperty Name="LoginId" ColumnName="LoginId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
