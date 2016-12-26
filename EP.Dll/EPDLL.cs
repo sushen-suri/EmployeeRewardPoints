@@ -69,6 +69,7 @@ namespace EP.Dll
                     cmd.Parameters.AddWithValue("@Password", modal.Password);
                     cmd.Parameters.AddWithValue("@Contact", modal.Contact);
                     cmd.Parameters.AddWithValue("@ProfilePic", modal.ProfilePic);
+                    cmd.Parameters.AddWithValue("@TotalEarnedPoints", 0);
 
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -128,7 +129,6 @@ namespace EP.Dll
             }
         }
 
-
         public bool DonatePoints(TransferPoints data)
         {
             try
@@ -137,17 +137,14 @@ namespace EP.Dll
                 con.Open();
                 using (SqlCommand cmd = new SqlCommand("spTransferPoints", con))
                 {
-                    cmd.Parameters.AddWithValue("@FromEmployeeId", data.FromEmployeeId);
+                    cmd.Parameters.AddWithValue("@FromLoginId", data.FromEmployeeId);
                     cmd.Parameters.AddWithValue("@ToEmployeeId", data.ToEmployeeId);
                     cmd.Parameters.AddWithValue("@Points", data.Points);
                     cmd.Parameters.AddWithValue("@Reason", data.Reason);
                     cmd.CommandType = CommandType.StoredProcedure;
 
-                    var affectedRows = cmd.ExecuteNonQuery();
-                    if (affectedRows > 0)
-                        return true;
-                    else
-                        return false;
+                    cmd.ExecuteNonQuery();
+                    return true;
                 }
             }
             catch

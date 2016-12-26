@@ -6,7 +6,7 @@
 <div class="row">
     <div class="col-sm-offset-3 col-sm-6">
 
-        <div class="panel panel-primary">
+        <div class="panel panel-primary" id="registrationPanel">
             <div class="panel-heading"><h2 class="text-center">Signup</h2></div>
             <div class="panel-body">
                 <form>
@@ -14,30 +14,25 @@
                         <label for="usr">Name:</label>
                         <input type="text" class="form-control" id="name">
                     </div>
-
                     <div class="form-group">
                         <label for="usr">Employee Id:</label>
-                        <input type="text" class="form-control" id="empId">
+                        <input type="number" class="form-control" id="empId">
                     </div>
-
                     <div class="form-group">
                         <label for="usr">Email:</label>
                         <input type="email" class="form-control" id="email">
                     </div>
-
                     <div class="form-group">
                         <label for="pwd">Password:</label>
                         <input type="password" class="form-control" id="pwd">
                     </div>
-
                     <div class="form-group">
                         <label for="usr">Mobile:</label>
                         <input type="number" class="form-control" id="mobile">
                     </div>
-
                     @*<div class="form-group">
-                        <label for="usr">Date of Birth:</label>
-                        <input type="date" class="form-control" id="dob">
+                    <label for="usr">Date of Birth:</label>
+                    <input type="date" class="form-control" id="dob">
                     </div>*@
 
                     <div class="form-group">
@@ -45,15 +40,14 @@
                         <select class="form-control" id="desig">
                             <option value="1">Project Manager</option>
                             <option value="2">Senior Software Engineer</option>
-                            <option value="3">Software Engineer</option>
                             <option value="4">Team Lead</option>
+                            <option value="3">Software Engineer</option>
                             <option value="5">Graduate Engineer Trainee</option>
                         </select>
                     </div>
                     <div class="text-center">
                         <button class="btn btn-primary" id="signup">Signup</button>
                     </div>
-
                 </form>
                 <hr />
                 <div class="col-sm-12 col-xs-12 text-center">
@@ -86,7 +80,10 @@
                 //crossDomain: true,
                 success: function (res) {
                     console.log(res);
-                    window.location.replace("@Url.Action("Signin", "Public")");
+                    if (res.res == 'true' || res.res == true)
+                        window.location.replace("@Url.Action("Signin", "Public")");
+                    else
+                        toastr["error"](res.message);
                 },
                 error: function (err) {
                 }
@@ -95,6 +92,33 @@
             return false;
         } else {
             toastr["error"]('All Fields are Mandatory.');
+            return false;
         }
     })
 </script>
+
+<style>
+    #registrationPanel {
+        margin-top: 5%;
+    }
+    body {
+        background-image: url('../../Content/Images/background.jpg');
+    }
+    #registrationPanel{
+        color: white;
+        background-color: rgba(255,255,255,.15);
+        border-color: transparent!important;
+    }
+    #registrationPanel .panel-heading{
+        color: #fff!important;
+        background-color: rgba(255, 255, 255, 0.2)!important;
+        border-color: transparent!important;
+    }
+    .btn-primary,.btn-primary:hover,.btn-primary:active{
+        background-color: #820620!important;
+        border-color: #300009!important;
+    }
+    .btn-primary:focus{
+        background-color:#300009!important;
+    }
+</style>

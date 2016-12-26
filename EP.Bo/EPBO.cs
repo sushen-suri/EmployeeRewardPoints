@@ -41,6 +41,7 @@ namespace EP.Bo
         public string Contact { get; set; }
         public DateTime DateCreated { get; set; }
     }
+
     public class TransferPoints
     {
         public long FromEmployeeId { get; set; }

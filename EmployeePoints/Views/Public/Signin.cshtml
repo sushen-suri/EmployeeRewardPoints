@@ -7,14 +7,14 @@
 <div class="row">
     <div class="col-sm-offset-3 col-sm-6">
 
-        <div class="panel panel-primary">
+        <div class="panel panel-primary" id="signinPanel">
             <div class="panel-heading"><h2 class="text-center">Signin</h2></div>
             <div class="panel-body">
 
                 <form>
                     <div class="form-group">
-                        <label for="email">Employee ID:</label>
-                        <input type="email" class="form-control" id="empId">
+                        <label for="empId">Employee ID:</label>
+                        <input type="number" class="form-control" id="empId">
                     </div>
 
                     <div class="form-group">
@@ -38,8 +38,9 @@
 </div>
 
 <script>
-    $(document).on("click", "#signin", function () {
-        if ($('#empId').val() && $('#pwd').val()) {
+    $(document).on("click", "#signin", function (e) {
+        e.preventDefault();
+        if ($('#empId').val().trim() != '' && $('#pwd').val().trim() != '') {
             var user = {};
             user = {
                 "EmployeeId": $('#empId').val(),
@@ -53,7 +54,7 @@
                 //crossDomain: true,
                 success: function (res) {
                     console.log(res);
-                    if (res == null) {
+                    if (res.messageType == 'error' || res.res == null || res.res.LoginId == 0 || res.res.LoginId == '0') {
                         toastr["error"]("Enter Correct Details.")
                     } else {
                         localStorage.setItem('currentEmployee', res.res.LoginId);
@@ -73,3 +74,29 @@
     });
 
 </script>
+
+<style>
+    #signinPanel{
+        margin-top:10%;
+    }
+    body {
+        background-image: url('../../Content/Images/background.jpg');
+    }
+    #signinPanel{
+        color: white;
+        background-color: rgba(255,255,255,.15);
+        border-color: transparent!important;
+    }
+    #signinPanel .panel-heading{
+        color: #fff!important;
+        background-color: rgba(255, 255, 255, 0.2)!important;
+        border-color: transparent!important;
+    }
+    .btn-primary,.btn-primary:hover,.btn-primary:active{
+        background-color: #820620!important;
+        border-color: #300009!important;
+    }
+    .btn-primary:focus{
+        background-color:#300009!important;
+    }
+</style>

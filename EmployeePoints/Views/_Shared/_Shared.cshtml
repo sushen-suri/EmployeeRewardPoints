@@ -28,7 +28,26 @@
         }
     }
     </script>
-    <div>
+
+    <style>
+        .navbar-inverse{
+            background-color: #337ab7!important;
+            border-color: #337ab7!important;
+        }
+        .navbar-brand{
+            color:white!important;
+        }
+        .navbar-inverse .navbar-nav>li>a{
+            color:white!important;
+        }
+        #topNavBar{
+            display:none;
+        }
+        .activeNav{
+            background-color:#135b96;
+        }
+    </style>
+    <div id="topNavBar">
         <nav class="navbar navbar-inverse">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -37,12 +56,12 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">MyMVCProject</a>
+                    <a class="navbar-brand" href="@Url.Action("DashBoard", "Private")">MyMVCProject</a>
                 </div>
                 <div class="collapse navbar-collapse" id="myNavbar">
                     <ul class="nav navbar-nav navbar-right" id="login">
-                        <li><a href="@Url.Action("DashBoard", "Private")">DashBorad</a></li>
-                        <li><a href="@Url.Action("DonatePoints", "Private")">Donate Points</a></li>
+                        <li id="dashNav"><a href="@Url.Action("DashBoard", "Private")">DashBorad</a></li>
+                        <li id="rewardNav"><a href="@Url.Action("DonatePoints", "Private")">Reward Points</a></li>
                         <li><a href="@Url.Action("Logout", "Private")">LogOut</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right" id="logout">
