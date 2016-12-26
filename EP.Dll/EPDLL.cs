@@ -248,5 +248,76 @@ namespace EP.Dll
                 con.Close();
             }
         }
+
+
+        public bool CheckExistingContact(EmpSignin check)
+        {
+            try
+            {
+                InitializeConnection();
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("spCheckByContact", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@Contact", check.Contact);
+
+                    //Int32 count = Convert.ToInt32(cmd.ExecuteScalar());
+                    object o = cmd.ExecuteScalar();
+                    if (o != null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
+
+
+
+        public bool CheckExistingEmployeeId(EmpSignin check)
+        {
+            try
+            {
+                InitializeConnection();
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("spCheckByEmployeeId", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@EmployeeId", check.EmployeeId);
+
+                    //Int32 count = Convert.ToInt32(cmd.ExecuteScalar());
+                    object o = cmd.ExecuteScalar();
+                    if (o != null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
     }
 }

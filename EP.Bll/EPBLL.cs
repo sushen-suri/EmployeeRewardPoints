@@ -41,5 +41,13 @@ namespace EP.Bll
         {
             return epObj.CheckExistingEmail(check);
         }
+        public bool CheckExistingContact(EmpSignin check)
+        {
+            return epObj.CheckExistingContact(check);
+        }
+        public bool CheckExistingEmployeeId(EmpSignin check)
+        {
+            return epObj.CheckExistingEmployeeId(check);
+        }
     }
 }

@@ -221,14 +221,106 @@ namespace EmployeePoints.Controllers
       
         }
 
+
+        /// <summary>
+        /// Check Existing Email
+        /// </summary>
+        /// <param name="check"></param>
+        /// <returns></returns>
         [HttpPost]
         public JsonResult CheckExistingEmail(EmpSignin check)
         {
-            EPBLL bll = new EPBLL();
+            var res = false;
+             var messageType = "Succes";
+            var message = "Emailid Available.";
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    EPBLL bll = new EPBLL();
+                    var isSuccess =  bll.CheckExistingEmail(check);
+                    if (isSuccess == true)
+                    {
+                        res = isSuccess;
+                        messageType = "failure";
+                        message = "Email Already Exist.";
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                message = "Email Already Exist.";
+            }
+            return Json(new { messageType = messageType, res = res, message = message }, JsonRequestBehavior.AllowGet);
+      
+        }
+
+
+        /// <summary>
+        /// Check Existing Contact
+        /// </summary>
+        /// <param name="check"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult CheckExistingContact(EmpSignin check)
+        {
+            var res = false;
+             var messageType = "Succes";
+             var message = "Contact Available.";
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    EPBLL bll = new EPBLL();
+                    var isSuccess = bll.CheckExistingContact(check);
+                    if (isSuccess == true)
+                    {
+                        res = isSuccess;
+                        messageType = "failure";
+                        message = "Contact Already Exist.";
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                message = "Contact Already Exist.";
+            }
+            return Json(new { messageType = messageType, res = res, message = message }, JsonRequestBehavior.AllowGet);
+      
+        }
             
-            var temp =  bll.CheckExistingEmail(check);
-            //return temp;
-            return Json(new { res = temp }, JsonRequestBehavior.DenyGet);
+
+        [HttpPost]
+        public JsonResult CheckExistingEmployeeId(EmpSignin check)
+        {
+            var res = false;
+             var messageType = "Succes";
+             var message = "EmployeeId Available.";
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    EPBLL bll = new EPBLL();
+                    var isSuccess = bll.CheckExistingEmployeeId(check);
+                    if (isSuccess == true)
+                    {
+                        res = isSuccess;
+                        messageType = "failure";
+                        message = "EmployeeId Already Exist.";
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                message = "EmployeeId Already Exist.";
+            }
+            return Json(new { messageType = messageType, res = res, message = message }, JsonRequestBehavior.AllowGet);
+      
         }
     }
+
+    
 }
