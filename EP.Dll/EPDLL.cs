@@ -218,5 +218,39 @@ namespace EP.Dll
                 return new Points();
             }
         }
+
+        public bool CheckExistingEmail(EmpSignin check)
+        {
+            try
+            {
+                InitializeConnection();
+                con.Open();
+                using (SqlCommand cmd = new SqlCommand("spCheckByEmail", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    cmd.Parameters.AddWithValue("@Email", check.Email);
+
+                    //Int32 count = Convert.ToInt32(cmd.ExecuteScalar());
+                    object o = cmd.ExecuteScalar();
+                    if (o != null)
+                    {
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            finally
+            {
+                con.Close();
+            }
+        }
     }
 }

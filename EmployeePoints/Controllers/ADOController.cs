@@ -220,5 +220,14 @@ namespace EmployeePoints.Controllers
             return Json(new { messageType = messageType, res = res, message = message }, JsonRequestBehavior.AllowGet);
       
         }
+
+        [HttpPost]
+        public JsonResult CheckExistingEmail(EmpSignin check)
+        {
+            EPBLL bll = new EPBLL();
+            var temp =  bll.CheckExistingEmail(check);
+            //return temp;
+            return Json(new { res = temp }, JsonRequestBehavior.DenyGet);
+        }
     }
 }

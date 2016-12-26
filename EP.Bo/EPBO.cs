@@ -8,6 +8,8 @@ namespace EP.Bo
 {
     public class EmpSignin
     {
+        public string Email { get; set; }
+        public string Contact { get; set; }
         public Int64 EmployeeId { get; set; }
         public string Password { get; set; }
     }

@@ -37,5 +37,9 @@ namespace EP.Bll
         {
             return epObj.PointsBetweenDates(date);
         }
+        public bool CheckExistingEmail(EmpSignin check)
+        {
+            return epObj.CheckExistingEmail(check);
+        }
     }
 }
