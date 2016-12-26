@@ -89,7 +89,47 @@ namespace EP.Dll
             }
         }
 
-        public List<Employee> GetEmployee(Int64? empId = null)
+        public List<Employee> Update(UpdateInfo Modal)
+        {
+            //var employeesList = new List<EmployeeList>();
+            try
+            {
+                InitializeConnection();
+                using (SqlCommand cmd = new SqlCommand("spUpdateEmployee", con))
+                {
+                    cmd.Parameters.AddWithValue("@LoginId", Modal.LoginId);
+                    cmd.Parameters.AddWithValue("@Password", Modal.Password);
+                    cmd.Parameters.AddWithValue("@Contact", Modal.Contact);
+                    cmd.Parameters.AddWithValue("@EmployeeName", Modal.EmployeeName);
+                    cmd.Parameters.AddWithValue("@ProfilePic", Modal.ProfilePic);
+                    cmd.Parameters.AddWithValue("@DesignationId", Modal.DesignationId);
+                    cmd.CommandType = CommandType.StoredProcedure;
+
+                    SqlDataAdapter da = new SqlDataAdapter(cmd);
+                    DataSet ds = new DataSet();
+                    da.Fill(ds);
+
+                    var dt = ds.Tables[0];
+
+                    return dt.AsEnumerable().Select(a => new Employee
+                    {
+                        EmployeeName = Convert.ToString(a["EmployeeName"]),
+                        Title = Convert.ToString(a["Title"]),
+                        EmployeeId = Convert.ToInt64(a["EmployeeId"]),
+                        ProfilePic = Convert.ToString(a["ProfilePic"]),
+                        TotalEarnedPoints = Convert.ToInt64(a["TotalEarnedPoints"]),
+                        Email = Convert.ToString(a["Email"]),
+                        Contact = Convert.ToString(a["Contact"])
+                    }).ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<Employee>();
+            }
+        }
+
+        public List<Employee> GetEmployee(SearchBy modal)
         {
             var employeeList = new List<Employee>();
             try
@@ -97,7 +137,8 @@ namespace EP.Dll
                 InitializeConnection();
                 using (SqlCommand cmd = new SqlCommand("spGetEmployee", con))
                 {
-                    cmd.Parameters.AddWithValue("@LoginId", empId);
+                    cmd.Parameters.AddWithValue("@LoginId", modal.LoginId);
+                    cmd.Parameters.AddWithValue("@SearchUsing", modal.SearchUsing);
 
                     cmd.CommandType = CommandType.StoredProcedure;
 
@@ -109,6 +150,7 @@ namespace EP.Dll
 
                     employeeList = dt.AsEnumerable().Select(a => new Employee
                     {
+                        DesignationId = Convert.ToInt16(a["DesignationId"]),
                         EmployeeName = Convert.ToString(a["EmployeeName"]),
                         Title = Convert.ToString(a["Title"]),
                         EmployeeId = Convert.ToInt64(a["EmployeeId"]),
@@ -249,7 +291,6 @@ namespace EP.Dll
             }
         }
 
-
         public bool CheckExistingContact(EmpSignin check)
         {
             try
@@ -284,8 +325,6 @@ namespace EP.Dll
             }
         }
 
-
-
         public bool CheckExistingEmployeeId(EmpSignin check)
         {
             try
@@ -319,5 +358,6 @@ namespace EP.Dll
                 con.Close();
             }
         }
+
     }
 }

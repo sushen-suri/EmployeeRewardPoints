@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using EP.Bll;
 using EP.Bo;
+using System.IO;
 
 namespace EmployeePoints.Controllers
 {
@@ -15,7 +16,7 @@ namespace EmployeePoints.Controllers
         //
         // GET: /ADO/
 
-        
+
         /// <summary>
         /// Login Comtroller
         /// </summary>
@@ -65,6 +66,15 @@ namespace EmployeePoints.Controllers
             var messageType = "error";
             var message = "Error occured while registering user.";
 
+            HttpPostedFileBase file = Request.Files[0];
+            string fname;
+            string[] testfiles = file.FileName.Split(new char[] { '\\' });
+            fname = testfiles[testfiles.Length - 1];
+            // Get the complete folder path and store the file inside it.  
+            fname = Path.Combine(Server.MapPath("~/Images/"), fname);
+            file.SaveAs(fname);
+            modal.ProfilePic = testfiles[testfiles.Length - 1];
+
             try
             {
                 if (ModelState.IsValid)
@@ -89,12 +99,54 @@ namespace EmployeePoints.Controllers
         }
 
         /// <summary>
+        /// to update user data
+        /// </summary>
+        /// <param name="Modal"></param>
+        /// <returns></returns>
+        public JsonResult Update(UpdateInfo Modal)
+        {
+            var res = new List<Employee>();
+            var messageType = "error";
+            var message = "Error occured while updating user.";
+            
+            try
+            {
+                HttpPostedFileBase file = Request.Files[0];
+                string fname;
+                string[] testfiles = file.FileName.Split(new char[] { '\\' });
+                fname = testfiles[testfiles.Length - 1];
+                // Get the complete folder path and store the file inside it.  
+                fname = Path.Combine(Server.MapPath("~/Images/"), fname);
+                file.SaveAs(fname);
+                Modal.ProfilePic = testfiles[testfiles.Length - 1];
+
+                if (ModelState.IsValid)
+                {
+                    //ADOBLLWithQuery bll = new ADOBLLWithQuery();
+                    EPBLL bll = new EPBLL();
+                    var isSuccess = bll.Update(Modal);
+
+                    res = isSuccess;
+                    messageType = "success";
+                    message = "Successfully registered.";
+                }
+            }
+            catch (Exception)
+            {
+                message = "Exception occurred while performing operation.";
+            }
+
+            return Json(new { messageType = messageType, res = res, message = message }, JsonRequestBehavior.AllowGet);
+            
+        }
+
+        /// <summary>
         /// to get List of Employees OR to get a perticular Employee nby LoginId
         /// </summary>
-        /// <param name="empId"></param>
+        /// <param name="modal"></param>
         /// <returns></returns>
-        [HttpGet]
-        public JsonResult GetEmployee(Int64? empId)
+        //[HttpGet]
+        public JsonResult GetEmployee(SearchBy modal)
         {
             var res = new List<Employee>();
             var messageType = "error";
@@ -105,13 +157,10 @@ namespace EmployeePoints.Controllers
                 if (ModelState.IsValid)
                 {
                     EPBLL bll = new EPBLL();
-                    var isSuccess = bll.GetEmployee(empId);
-                    if (isSuccess.Count != 0)
-                    {
-                        res = isSuccess;
-                        messageType = "success";
-                        message = "Success.";
-                    }
+                    var isSuccess = bll.GetEmployee(modal);
+                    res = isSuccess;
+                    messageType = "success";
+                    message = "Success.";
                 }
             }
             catch (Exception)
@@ -119,6 +168,22 @@ namespace EmployeePoints.Controllers
                 message = "Exception occurred while performing operation.";
             }
             return Json(new { messageType = messageType, res = res, message = message }, JsonRequestBehavior.AllowGet);
+        }
+
+        //public ActionResult Downloads(){
+        //    var dir = new System.IO.DirectoryInfo(Server.MapPath("~/Images/")); 
+        //    System.IO.FileInfo[] fileNames = dir.GetFiles(); 
+        //    List<string> items = new List<string>(); 
+        //    foreach (var file in fileNames) 
+        //    { 
+        //        items.Add(file.Name); 
+        //    } 
+        //    return View(items); 
+        //}
+
+        public FileResult Download(string ImageName)
+        {
+            return File("~/Images/" + ImageName, Path.GetFileName("~/Images/" + ImageName));
         }
 
         /// <summary>
@@ -218,7 +283,7 @@ namespace EmployeePoints.Controllers
                 message = "No Reward Points.";
             }
             return Json(new { messageType = messageType, res = res, message = message }, JsonRequestBehavior.AllowGet);
-      
+
         }
 
 
@@ -231,7 +296,7 @@ namespace EmployeePoints.Controllers
         public JsonResult CheckExistingEmail(EmpSignin check)
         {
             var res = false;
-             var messageType = "Succes";
+            var messageType = "Succes";
             var message = "Emailid Available.";
 
             try
@@ -239,7 +304,7 @@ namespace EmployeePoints.Controllers
                 if (ModelState.IsValid)
                 {
                     EPBLL bll = new EPBLL();
-                    var isSuccess =  bll.CheckExistingEmail(check);
+                    var isSuccess = bll.CheckExistingEmail(check);
                     if (isSuccess == true)
                     {
                         res = isSuccess;
@@ -253,7 +318,7 @@ namespace EmployeePoints.Controllers
                 message = "Email Already Exist.";
             }
             return Json(new { messageType = messageType, res = res, message = message }, JsonRequestBehavior.AllowGet);
-      
+
         }
 
 
@@ -266,8 +331,8 @@ namespace EmployeePoints.Controllers
         public JsonResult CheckExistingContact(EmpSignin check)
         {
             var res = false;
-             var messageType = "Succes";
-             var message = "Contact Available.";
+            var messageType = "Succes";
+            var message = "Contact Available.";
 
             try
             {
@@ -288,16 +353,16 @@ namespace EmployeePoints.Controllers
                 message = "Contact Already Exist.";
             }
             return Json(new { messageType = messageType, res = res, message = message }, JsonRequestBehavior.AllowGet);
-      
+
         }
-            
+
 
         [HttpPost]
         public JsonResult CheckExistingEmployeeId(EmpSignin check)
         {
             var res = false;
-             var messageType = "Succes";
-             var message = "EmployeeId Available.";
+            var messageType = "Succes";
+            var message = "EmployeeId Available.";
 
             try
             {
@@ -318,9 +383,10 @@ namespace EmployeePoints.Controllers
                 message = "EmployeeId Already Exist.";
             }
             return Json(new { messageType = messageType, res = res, message = message }, JsonRequestBehavior.AllowGet);
-      
+
         }
+
     }
 
-    
+
 }

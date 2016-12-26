@@ -2,10 +2,15 @@
     ViewBag.Title = "DonatePoints";
     Layout = "~/Views/Private/Index.cshtml";
 }
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-bootpag/1.0.4/jquery.bootpag.min.js"></script>
 <h2>Reward Points</h2>
 <hr />
 <script type="text/javascript">
+    var pageStatus = {
+        skip: 0,
+        limit: 5,
+        pageNum: 1
+    }
     $(document).ready(function () {
         $('#rewardNav').addClass('activeNav');
         if (localStorage.getItem("currentEmployee") != null) {
@@ -56,11 +61,17 @@
         }
     }
 
-    function employeeList() {
+    $(document).on('click','#searchBtn' ,function () {
+        employeeList($('#searchBy').val().trim());
+    })
+
+    function employeeList(search) {
+        var data = { SearchUsing: search};//?search:'' };
         $.ajax({
             url: "/ADO/GetEmployee",
-            type: "GET",
+            type: "POST",
             contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data),
             success: function (res) {
                 console.log(res)
                 fillTable(res.res, '#usersTable tbody');
@@ -80,10 +91,10 @@
     }
 </script>
 
-@*<div id="filter">
-    <input type='text' placeholder='Name' id='name' />
-    <button type='button' id='filted' onclick='filterList()'>Filter</button>
-</div>*@
+<div id="filter" class="form-inline">
+    <input type='text' class="form-control" placeholder='Search' id='searchBy' />
+    <button type='button' class="btn btn-primary" id='searchBtn' onclick='filterList()'>Search</button>
+</div>
 <div class="table-responsive">
     <table class="table table-hover" id="usersTable">
         <thead>
@@ -148,5 +159,8 @@
     }
     #modalFooter{
         text-align:right;
+    }
+    #filter{
+        margin-bottom:10px;
     }
 </style>

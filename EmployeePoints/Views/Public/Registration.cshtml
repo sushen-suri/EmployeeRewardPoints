@@ -31,9 +31,9 @@
                         <input type="number" class="form-control" id="mobile" onkeypress="return isNumber(event)" onkeydown="checkLength(this.value, event, 10)">
                     </div>
                     @*<div class="form-group">
-                    <label for="usr">Date of Birth:</label>
-                    <input type="date" class="form-control" id="dob">
-                    </div>*@
+                        <label for="usr">Date of Birth:</label>
+                        <input type="date" class="form-control" id="dob">
+                        </div>*@
 
                     <div class="form-group">
                         <label for="usr">Designation:</label>
@@ -45,8 +45,11 @@
                             <option value="5">Graduate Engineer Trainee</option>
                         </select>
                     </div>
+                    <label for="profilePic">Profile Picture:</label>
+                    <input type="file" name="file" id="profilePic" />
+
                     <div class="text-center">
-                        <button class="btn btn-primary" id="signup" disabled="true">Signup</button>
+                        <button class="btn btn-primary" id="signup" disabled="">Signup</button>
                     </div>
                 </form>
                 <hr />
@@ -60,23 +63,34 @@
 </div>
 
 <script>
+
     $(document).on("click", "#signup", function () {
         if ($('#name').val() && $('#empId').val() && $('#email').val() && $('#pwd').val() && $('#mobile').val()) {
-            var user = {};
-            user = {
-                "EmployeeName": $('#name').val(),
-                "EmployeeId": $('#empId').val(),
-                "Email": $('#email').val(),
-                "Password": $('#pwd').val(),
-                "Contact": $('#mobile').val(),
-                "DesignationId": $('#desig').val(),
-            }
+            var user = new FormData;
+            user.append("EmployeeName", $('#name').val());
+            user.append("EmployeeId",$('#empId').val());
+            user.append("Email", $('#email').val());
+            user.append("Password", $('#pwd').val());
+            user.append("Contact", $('#mobile').val());
+            user.append("DesignationId", $('#desig').val());
+            user.append("ProfilePic", $('#profilePic')[0].files[0]);
+            //user = {
+            //    "EmployeeName": $('#name').val(),
+            //    "EmployeeId": $('#empId').val(),
+            //    "Email": $('#email').val(),
+            //    "Password": $('#pwd').val(),
+            //    "Contact": $('#mobile').val(),
+            //    "DesignationId": $('#desig').val(),
+            //    "ProfilePic": $('#file').val()
+            //}
+            //console.log($('#profilePic').files[0]);
+            //return false;
             $.ajax({
                 url: "/ADO/Registration",
-
                 type: "POST",
-                contentType: "application/json; charset=utf-8",
-                data: JSON.stringify(user),
+                contentType: false,//"application/json; charset=utf-8",
+                processData: false,
+                data: user,
                 //crossDomain: true,
                 success: function (res) {
                     console.log(res);
@@ -88,7 +102,6 @@
                 error: function (err) {
                 }
             });
-            console.log(user);
             return false;
         } else {
             toastr["error"]('All Fields are Mandatory.');
@@ -98,8 +111,7 @@
 
     $(document).on("blur", "#email", function () {
         var email = $("#email").val();
-        if (email)
-        {
+        if (email) {
             var user = { Email: email };
             $.ajax({
                 url: "/ADO/CheckExistingEmail",
@@ -134,39 +146,38 @@
 
     $(document).on("blur", "#mobile", function () {
         var mobile = $("#mobile").val();
-        if (mobile)
-        {
-        var user = { Contact: mobile };
-        $.ajax({
-            url: "/ADO/CheckExistingContact",
-            type: "POST",
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify(user),
-            success: function (res) {
-                console.log(res);
-                console.log(res.res);
-                if (!res.res) {
-                    toastr["success"]('Contact Available.');
-                    $("#signup").removeAttr("disabled", "true");
+        if (mobile) {
+            var user = { Contact: mobile };
+            $.ajax({
+                url: "/ADO/CheckExistingContact",
+                type: "POST",
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(user),
+                success: function (res) {
+                    console.log(res);
+                    console.log(res.res);
+                    if (!res.res) {
+                        toastr["success"]('Contact Available.');
+                        $("#signup").removeAttr("disabled", "true");
+                    }
+                    if (res.res) {
+                        toastr["error"]('Contact Already Exist.');
+                        $("#signup").attr("disabled", "true");
+                    }
+                },
+                error: function (res) {
+                    console.log(JSON.stringify(res))
+                    toastr["error"]('Error Occured.');
                 }
-                if (res.res) {
-                    toastr["error"]('Contact Already Exist.');
-                    $("#signup").attr("disabled", "true");
-                }
-            },
-            error: function (res) {
-                console.log(JSON.stringify(res))
-                toastr["error"]('Error Occured.');
-            }
-        });
+            });
         }
         else {
             console.log("Please Provide an Contact");
             toastr["error"]('Field can not be Empty');
         }
     })
-    
+
 
 
     $(document).on("blur", "#empId", function () {
@@ -216,24 +227,29 @@
     #registrationPanel {
         margin-top: 5%;
     }
+
     body {
         background-image: url('../../Content/Images/background.jpg');
     }
-    #registrationPanel{
+
+    #registrationPanel {
         color: white;
         background-color: rgba(255,255,255,.15);
-        border-color: transparent!important;
+        border-color: transparent !important;
     }
-    #registrationPanel .panel-heading{
-        color: #fff!important;
-        background-color: rgba(255, 255, 255, 0.2)!important;
-        border-color: transparent!important;
+
+        #registrationPanel .panel-heading {
+            color: #fff !important;
+            background-color: rgba(255, 255, 255, 0.2) !important;
+            border-color: transparent !important;
+        }
+
+    .btn-primary, .btn-primary:hover, .btn-primary:active {
+        background-color: #820620 !important;
+        border-color: #300009 !important;
     }
-    .btn-primary,.btn-primary:hover,.btn-primary:active{
-        background-color: #820620!important;
-        border-color: #300009!important;
-    }
-    .btn-primary:focus{
-        background-color:#300009!important;
-    }
+
+        .btn-primary:focus {
+            background-color: #300009 !important;
+        }
 </style>

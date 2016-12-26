@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.IO;
+using System.Web;
 using System.Text;
 using System.Threading.Tasks;
 using EP.Bo;
@@ -21,9 +23,15 @@ namespace EP.Bll
         {
             return epObj.Registration(modal);
         }
-        public List<Employee> GetEmployee(Int64? empId = null)
+
+        public List<Employee> Update(UpdateInfo Modal)
         {
-            return epObj.GetEmployee(empId);
+            return epObj.Update(Modal);
+        }
+
+        public List<Employee> GetEmployee(SearchBy modal)
+        {
+            return epObj.GetEmployee(modal);
         }
         public bool DonatePoints(TransferPoints data)
         {

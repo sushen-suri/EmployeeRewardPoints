@@ -29,10 +29,12 @@ namespace EP.Bo
         public string EmployeeName { get; set; }
         public int DesignationId { get; set; }
         public string ProfilePic { get; set; }
+
     }
 
     public class Employee
     {
+        public int DesignationId { get; set; }
         public string EmployeeName { get; set; }
         public string Title { get; set; }
         public string ProfilePic { get; set; }
@@ -63,5 +65,14 @@ namespace EP.Bo
     {
         public DateTime FromDate { get; set; }
         public DateTime ToDate { get; set; }
+    }
+    public class SearchBy
+    {
+        public Int64? LoginId { get; set; }
+        public string SearchUsing { get; set; }
+    }
+    public class UpdateInfo : Registration
+    {
+        public Int64 LoginId { get; set; }
     }
 }
